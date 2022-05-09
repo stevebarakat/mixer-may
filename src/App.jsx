@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "./supabaseClient";
 import Mixer from "./components/Mixer";
 import Dropdown from "./components/Dropdown";
 import { ninteenOne } from "./songs/1901";
@@ -29,12 +30,18 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("song", JSON.stringify(song));
-    try {
-      return JSON.parse(localStorage.getItem("song"));
-    } catch {
-      console.error("The song could not be parsed into JSON.");
-      return {};
-    }
+    (async () => {
+      const { data, error } = await supabase
+        .from("song")
+        .upsert({ id: 1, slug: song });
+      console.log(JSON.parse(data[0].slug));
+    })();
+    // try {
+    //   return JSON.parse(localStorage.getItem("song"));
+    // } catch {
+    //   console.error("The song could not be parsed into JSON.");
+    //   return {};
+    // }
   }, [song]);
 
   function handleChange(value) {
