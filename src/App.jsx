@@ -119,13 +119,13 @@ function App() {
           value={song}
           onChange={(val) => handleChange(val.slug)}
         />
-        <div className="song-info">
+        {/* <div className="song-info">
           <p>Song: {song.name}</p>
           <p>Artist: {song.artist}</p>
           <p>Year: {song.year}</p>
           <p>Studio: {song.studio}</p>
           <p>Location: {song.location}</p>
-        </div>
+        </div> */}
       </div>
     </>
   );
