@@ -4,7 +4,7 @@ import SoloMute from "./SoloMute";
 import scale from "../utils/scale";
 import "./channel-strip.css";
 
-function ChannelStrip({ track, channel, eq, meterVal, state }) {
+function ChannelStrip({ track, channel, meterVal, state }) {
   const [volume, setVolume] = useState(0);
   const [pan, setPan] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
@@ -44,25 +44,6 @@ function ChannelStrip({ track, channel, eq, meterVal, state }) {
       </div>
 
       <div className="fader-wrap">
-        <div>
-          <input
-            className="pan"
-            type="range"
-            min="0"
-            max="12"
-            defaultValue="0"
-            step="0.01"
-            onChange={(e) => {
-              // eq.lowFrequency._param.value = e.target.value;
-              eq.mid._param.value = e.target.value;
-              console.log("eq.defaultValue");
-            }}
-          />
-          <div className="pan-labels">
-            <span>E</span>
-            <span>Q</span>
-          </div>
-        </div>
         <div>
           <input
             className="pan"

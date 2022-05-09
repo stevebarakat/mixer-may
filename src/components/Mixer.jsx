@@ -9,7 +9,6 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
   const requestRef = useRef();
   const channels = useRef([]);
   const players = useRef([]);
-  const eqs = useRef([]);
   const meters = useRef([]);
   const [meterVals, setMeterVals] = useState([]);
   const [state, setState] = useState("stopped");
@@ -28,16 +27,12 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
     for (let i = 0; i < tracks.length; i++) {
       meters.current.push(new Meter());
       players.current.push(new Player(tracks[i].path));
-      eqs.current.push(new EQ3());
       channels.current.push(new Channel().toDestination());
     }
 
     // connect everything
     players.current.forEach((player, i) =>
-      player
-        .chain(eqs.current[i], channels.current[i], meters.current[i])
-        .sync()
-        .start(0)
+      player.chain(meters.current[i], channels.current[i]).sync().start(0)
     );
 
     loaded().then(() => handleSetIsLoaded(true));
@@ -78,7 +73,6 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
               key={track.path}
               meterVal={meterVals[i]}
               channel={channels.current[i]}
-              eq={eqs.current[i]}
               track={track}
               state={state}
             />
