@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Destination, Meter } from "tone";
 import VuMeter from "./VuMeter";
 import scale from "../utils/scale";
@@ -19,10 +19,10 @@ function MasterVol() {
     Destination.set({ volume: sv });
   }
 
-  const animateMeter = () => {
+  const animateMeter = useCallback(() => {
     setMasterMeterVal(masterMeter.getValue() + 85);
     requestRef.current = requestAnimationFrame(animateMeter);
-  };
+  }, []);
 
   useEffect(() => {
     requestAnimationFrame(animateMeter);

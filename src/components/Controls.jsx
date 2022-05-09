@@ -5,6 +5,7 @@ import Rewind from "./Rewind";
 import FastFwd from "./FastFwd";
 import Play from "./Play";
 import { formatSeconds } from "../utils/formatTime";
+import { formatMilliseconds } from "../utils/formatTime";
 
 function Controls({ song, state, handleSetState }) {
   Transport.bpm.value = song.bpm;
@@ -13,22 +14,6 @@ function Controls({ song, state, handleSetState }) {
 
   return (
     <>
-      <div className="buttons-wrap">
-        <Restart song={song} startTime={startTime} />
-        <Rewind startTime={startTime} startPosition={song.start} />
-        <Play song={song} state={state} handleSetState={handleSetState} />
-        <FastFwd
-          startTime={startTime}
-          currentTime={currentTime}
-          startPosition={song.start}
-          endPosition={song.end}
-          handleSetState={handleSetState}
-        />
-      </div>
-      {/* <div classNameName="clock">
-        <div classNameName="ghost">88:88:88</div>
-        {formatTime(Transport.seconds)}
-      </div> */}
       <div className="window js-window">
         <div className="playing artist">{song.artist}</div>
         <div className="playing song">{song.name}</div>
@@ -45,6 +30,25 @@ function Controls({ song, state, handleSetState }) {
           <div className="song-time end">{formatSeconds(song.end)}</div>
         </div>
       </div>
+      <div className="buttons-wrap">
+        <Restart song={song} startTime={startTime} />
+        <Rewind startTime={startTime} startPosition={song.start} />
+        <Play song={song} state={state} handleSetState={handleSetState} />
+        <FastFwd
+          startTime={startTime}
+          currentTime={currentTime}
+          startPosition={song.start}
+          endPosition={song.end}
+          handleSetState={handleSetState}
+        />
+      </div>
+      <div className="clock">
+        <div className="ghost">88:88:88</div>
+        {formatMilliseconds(Transport.seconds)}
+      </div>
+      {/* <div className="window js-window">
+        {formatMilliseconds(Transport.seconds)}
+      </div> */}
     </>
   );
 }

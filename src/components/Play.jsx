@@ -2,11 +2,12 @@ import { useState } from "react";
 import { start, Transport as t } from "tone";
 import { FaPlay, FaPause } from "react-icons/fa";
 
-function Play({ song, state, handleSetState }) {
+function Play({ state, handleSetState, song }) {
   const [ready, setReady] = useState(false);
 
   function initializeAudioContext() {
     start();
+    t.position = song.start;
     t.start();
     handleSetState("started");
     setReady(true);

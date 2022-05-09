@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { loaded, Player, EQ3, Channel, Meter, Transport as t } from "tone";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { loaded, Player, Channel, Meter, Transport as t } from "tone";
 import Controls from "./Controls";
 import MasterVol from "./MasterVol";
 import ChannelStrip from "./ChannelStrip";
@@ -32,20 +32,22 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
 
     // connect everything
     players.current.forEach((player, i) =>
-      player.chain(meters.current[i], channels.current[i]).sync().start(0)
+      player.chain(meters.current[i], channels.current[i]).sync().start()
     );
+  }, [tracks]);
 
+  useEffect(() => {
     loaded().then(() => handleSetIsLoaded(true));
-  }, [tracks, handleSetIsLoaded]);
+  }, [handleSetIsLoaded]);
 
   // loop recursively to amimateMeters
-  const animateMeter = () => {
+  const animateMeter = useCallback(() => {
     meters.current.forEach((meter, i) => {
       meterVals[i] = meter.getValue() + 85;
       setMeterVals(() => [...meterVals]);
     });
     requestRef.current = requestAnimationFrame(animateMeter);
-  };
+  }, [meterVals]);
 
   // triggers animateMeter
   useEffect(() => {

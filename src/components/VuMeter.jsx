@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import "./vu-meter.css";
 
 // Settings
@@ -30,7 +30,7 @@ function VuMeter({ meterValue, height, width }) {
   const boxGapX = (width - boxWidth) / 2;
 
   // Get the color of a box given it's ID and the current value
-  const getBoxColor = (id, val) => {
+  const getBoxColor = useCallback((id, val) => {
     if (id > boxCount - boxCountRed) {
       return id <= Math.ceil((val / max) * boxCount) ? redOn : redOff;
     }
@@ -38,7 +38,7 @@ function VuMeter({ meterValue, height, width }) {
       return id <= Math.ceil((val / max) * boxCount) ? yellowOn : yellowOff;
     }
     return id <= Math.ceil((val / max) * boxCount) ? greenOn : greenOff;
-  };
+  }, []);
 
   useEffect(() => {
     const c = stage.current.getContext("2d");
