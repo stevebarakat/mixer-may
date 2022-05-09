@@ -8,14 +8,14 @@ const masterMeter = new Meter();
 function MasterVol() {
   const requestRef = useRef();
   const [masterMeterVal, setMasterMeterVal] = useState(0);
-  const [masterVol, setMasterVol] = useState(0 + " db");
+  const [masterVol, setMasterVol] = useState(0);
   Destination.connect(masterMeter);
 
   function changeMasterVolume(e) {
     const value = parseInt(e.target.value, 10);
     const v = Math.log(value + 101) / Math.log(113);
     const sv = scale(v, 0, 1, -100, 12);
-    setMasterVol(Math.round(sv) + " db");
+    setMasterVol(Math.round(sv));
     Destination.set({ volume: sv });
   }
 

@@ -254,19 +254,24 @@ button:active {
   -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
   -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
-  background: #d1d395;
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #dfe2ad),
-    color-stop(100%, #d1d395)
+  background: #dfe2ad;
+  background: -moz-linear-gradient(
+    top,
+    hsl(63, 48%, 78%) 0%,
+    hsl(62, 41%, 71%) 100%
   );
-  background-image: -webkit-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -moz-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -ms-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -o-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: linear-gradient(top, #dfe2ad, #d1d395);
+  background: -webkit-linear-gradient(
+    top,
+    hsl(63, 48%, 78%) 0%,
+    hsl(62, 41%, 71%) 100%
+  );
+  background: linear-gradient(
+    to bottom,
+    hsl(63, 48%, 78%) 0%,
+    hsl(62, 41%, 71%) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfe2ad', endColorstr='#d1d395',GradientType=0 );
+
   overflow: hidden;
 }
 .window:after {
