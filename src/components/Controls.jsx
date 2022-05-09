@@ -15,20 +15,11 @@ function Controls({ song, state, handleSetState }) {
   return (
     <>
       <div className="window js-window">
-        <div className="playing artist">{song.artist}</div>
-        <div className="playing song">{song.name}</div>
-        <div className="song-info clearfix">
-          <div className="song-time start">
-            {formatSeconds(Transport.seconds)}
-          </div>
-          <div className="scrollbox dot">
-            <div className="hitbox js-window-hitbox"></div>
-            <div className="scale js-window-scale" style={{ width: "20%" }}>
-              <div className="slider"></div>
-            </div>
-          </div>
-          <div className="song-time end">{formatSeconds(song.end)}</div>
-        </div>
+        <div className="playing artist">Artist: {song.artist}</div>
+        <div className="playing song">Song:{song.name}</div>
+        <div className="playing song">Year:{song.year}</div>
+        <div className="playing song">Studio:{song.studio}</div>
+        <div className="playing song">Location:{song.location}</div>
       </div>
       <div className="buttons-wrap">
         <Restart song={song} startTime={startTime} />

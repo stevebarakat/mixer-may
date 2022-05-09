@@ -286,11 +286,13 @@ button:active {
   background-image: -ms-linear-gradient(top, #dfe2ad, #d1d395);
   background-image: -o-linear-gradient(top, #dfe2ad, #d1d395);
   background-image: linear-gradient(top, #dfe2ad, #d1d395);
+  overflow: hidden;
 }
 .window:after {
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
   content: "";
+  height: 11px;
   height: 40%;
   left: 0;
   position: absolute;
@@ -299,8 +301,7 @@ button:active {
   z-index: 1;
 }
 .window .playing {
-  height: 15px;
-  overflow: hidden;
+  line-height: 1.3rem;
   position: relative;
   white-space: nowrap;
   z-index: 2;
@@ -308,48 +309,4 @@ button:active {
 .window .playing.artist {
   font-weight: bold;
   margin-bottom: 2px;
-}
-.window .song-info {
-  padding-top: 8px;
-  position: relative;
-  font-size: 10px;
-}
-.window .scrollbox.dot {
-  background-color: #787878;
-  margin: 0 50px;
-  top: 2px;
-  z-index: 2;
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 255, 255, 0.5);
-  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 255, 255, 0.5);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6),
-    0 1px 0 rgba(255, 255, 255, 0.5);
-}
-.window .scrollbox.dot .scale {
-  border: none;
-  height: 7px;
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
-}
-.window .scrollbox.dot .slider {
-  background: white;
-  top: -1px;
-}
-.window .song-time {
-  line-height: 13px;
-  position: absolute;
-  top: 7px;
-  width: 50px;
-}
-.window .song-time.start {
-  left: -8px;
-  text-align: right;
-  color: #717342;
-}
-.window .song-time.end {
-  right: -7px;
-  text-align: left;
-  color: #717342;
 }
