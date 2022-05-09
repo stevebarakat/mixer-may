@@ -35,7 +35,10 @@ function MasterVol() {
   return (
     <div
       className="fader-wrap"
-      style={{ paddingBottom: 0, margin: "5px 0 0 16px", borderRadius: "4px" }}
+      style={{
+        padding: "12px 0 0 0",
+        margin: "0 0 0 16px",
+      }}
     >
       <div className="window js-window">
         <input
