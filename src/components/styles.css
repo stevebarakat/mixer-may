@@ -1,0 +1,97 @@
+.dropdown {
+  position: relative;
+  cursor: default;
+  font-family: sans-serif;
+  color: hsla(0, 0%, 100%, 0.825);
+  width: 45ch;
+  padding-top: 24px;
+}
+
+.dropdown .arrow {
+  border-color: hsla(0, 0%, 100%, 0.825) transparent transparent;
+  border-style: solid;
+  border-width: 5px 5px 0;
+  content: " ";
+  display: block;
+  height: 0;
+  margin-top: 0.3rem;
+  position: absolute;
+  right: 10px;
+  top: 14px;
+  width: 0;
+}
+
+.dropdown .arrow.open {
+  border-color: transparent transparent hsla(0, 0%, 100%, 0.825);
+  border-width: 0 5px 5px;
+}
+
+.dropdown .selected-value input {
+  line-height: 1.5;
+  font-size: 1rem;
+  background-color: #111;
+  border: 1px solid hsla(0, 0%, 100%, 0.825);
+  border-radius: 4px;
+  box-sizing: border-box;
+  cursor: default;
+  outline: none;
+  padding: 8px 52px 8px 10px;
+  transition: all 200ms ease;
+  width: 100%;
+  color: hsla(114, 80%, 50%, 0.85);
+  font-family: sans-serif;
+}
+
+.dropdown .selected-value input::placeholder {
+  color: hsla(0, 0%, 100%, 0.5);
+}
+
+.dropdown .options {
+  display: none;
+  background-color: #fff;
+  background: #111;
+  border: 1px solid hsla(0, 0%, 100%, 0.825);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  margin-top: -1px;
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 1000;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dropdown .options.open {
+  display: block;
+}
+
+.dropdown .option {
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  padding: 8px 10px;
+  transition: all 0.25s;
+}
+
+.dropdown .option.selected,
+.dropdown .option:hover {
+  background-color: hsla(0, 0%, 100%, 0.825);
+  color: #333;
+}
+
+.dropdown .options::-webkit-scrollbar {
+  width: 16px;
+}
+
+.dropdown .options::-webkit-scrollbar-track {
+  border-left: 1px solid hsla(0, 0%, 100%, 0.825);
+}
+
+.dropdown .options::-webkit-scrollbar-thumb {
+  background-color: hsla(0, 0%, 100%, 0.825);
+}
+.control {
+  position: relative;
+}
