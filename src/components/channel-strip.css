@@ -28,8 +28,8 @@
   top: -22.5px;
   position: relative;
   width: 35px;
-  transform: rotate(90deg); */
-}
+  transform: rotate(90deg);
+} */
 .volume:focus::-webkit-slider-runnable-track {
   background: transparent;
 }
