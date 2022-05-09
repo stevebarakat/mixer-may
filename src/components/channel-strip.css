@@ -18,7 +18,7 @@
   animate: 0.2s;
   background: transparent;
 }
-.volume::-webkit-slider-thumb {
+/* .volume::-webkit-slider-thumb {
   -webkit-appearance: none;
   background-image: url("knob.svg");
   border-radius: 4px;
@@ -28,7 +28,7 @@
   top: -22.5px;
   position: relative;
   width: 35px;
-  transform: rotate(90deg);
+  transform: rotate(90deg); */
 }
 .volume:focus::-webkit-slider-runnable-track {
   background: transparent;
@@ -40,7 +40,7 @@
   animate: 0.2s;
   background: transparent;
 }
-.volume::-moz-range-thumb {
+/* .volume::-moz-range-thumb {
   appearance: none;
   background-image: url("knob.svg");
   border-radius: 4px;
@@ -52,7 +52,7 @@
   width: 35px;
   transform: rotate(90deg);
   z-index: 9999;
-}
+} */
 
 .pan {
   height: 10px;
