@@ -27,9 +27,8 @@ import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import Chebyshever from "./FX/Chebyshev";
 
-function Mixer({ song, isLoaded, handleSetIsLoaded }) {
+function Mixer({ song }) {
   const tracks = song.tracks;
-  // console.log("tracks", tracks);
   const requestRef = useRef();
   const channels = useRef([]);
   const players = useRef([]);
@@ -40,6 +39,7 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
   const busOneMeter = useRef(null);
   const busOneChannel = useRef(null);
   const [meterVals, setMeterVals] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [busOneFxOneType, setBusOneFxOneType] = useState(null);
   const [busOneFxOneChoice, setBusOneFxOneChoice] = useState(null);
   const handleSetBusOneFxOneChoice = (value) => setBusOneFxOneChoice(value);
@@ -48,11 +48,12 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
   const handleSetBusOneFxTwoChoice = (value) => setBusOneFxTwoChoice(value);
   const [state, setState] = useState("stopped");
   const handleSetState = (value) => setState(value);
-  let initialState = [];
-  song.tracks.forEach((track) => {
-    initialState.push(false);
-  });
-  const [busOneActive, setBusOneActive] = useState(initialState);
+  const [busOneActive, setBusOneActive] = useState([
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [busOneFxOneControls, setBusOneFxOneControls] = useState(null);
   const [busOneFxTwoControls, setBusOneFxTwoControls] = useState(null);
 
@@ -92,7 +93,6 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
 
     return () => {
       t.stop();
-      t.seconds = 0;
       players.current.forEach((player, i) => {
         player.disconnect();
         meters.current[i].disconnect();
@@ -108,15 +108,18 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
     };
   }, [tracks]);
 
+  useEffect(() => {
+    loaded().then(() => setIsLoaded(true));
+  }, [setIsLoaded]);
+
   // loop recursively to amimateMeters
   const animateMeter = useCallback(() => {
-    if (state !== "started") return;
     meters.current.forEach((meter, i) => {
       meterVals[i] = meter.getValue() + 85;
       setMeterVals(() => [...meterVals]);
     });
     requestRef.current = requestAnimationFrame(animateMeter);
-  }, [meterVals, state]);
+  }, [meterVals]);
 
   // triggers animateMeter
   useEffect(() => {
@@ -262,16 +265,11 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
         default:
           break;
       }
-      return () => {
-        t.stop();
-        t.seconds = 0;
-        busOneFxOneType.disconnect();
-        busOneFxTwoType.disconnect();
-      };
     });
   }, [busOneFxOneChoice, busOneFxOneType, busOneFxTwoChoice, busOneFxTwoType]);
 
   useEffect(() => {
+    console.log(busOneFxOneChoice);
     if (busOneFxOneChoice === "fx1") busOneFxOneType.disconnect();
     if (busOneFxOneType === null || busOneChannel.current === null) return;
     busOneChannel.current.connect(busOneFxOneType);
@@ -303,10 +301,6 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
       }
     });
   }
-
-  useEffect(() => {
-    loaded().then(() => handleSetIsLoaded(true));
-  }, [handleSetIsLoaded, song]);
 
   // wait for the buffers to load
   return isLoaded === false ? (
@@ -360,7 +354,11 @@ function Mixer({ song, isLoaded, handleSetIsLoaded }) {
           handleSetBusOneFxTwoChoice={handleSetBusOneFxTwoChoice}
           busOneMeter={busOneMeter.current}
         />
-        <MasterVol state={state} masterMeter={masterMeter.current} />
+        <MasterVol
+          state={state}
+          masterMeter={masterMeter.current}
+          // masterBusChannel={masterBusChannel.current}
+        />
       </div>
       <div className="controls-wrap">
         <div className="controls-well">
