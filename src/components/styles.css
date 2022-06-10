@@ -423,6 +423,9 @@ button:active {
   color: #717342;
   width: 45ch;
   padding-top: 24px;
+  font-family: "Tekton";
+  font-weight: bold;
+  font-size: 1.25rem;
 }
 
 .dropdown .arrow {
@@ -451,19 +454,7 @@ button:active {
   -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
   -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
-  background: #d1d395;
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #dfe2ad),
-    color-stop(100%, #d1d395)
-  );
-  background-image: -webkit-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -moz-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -ms-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -o-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: linear-gradient(top, #dfe2ad, #d1d395);
+  background: var(--blue);
   border: 1px solid hsla(0, 0%, 100%, 0.825);
   border-radius: 4px;
   box-sizing: border-box;
@@ -472,12 +463,15 @@ button:active {
   padding: 8px 52px 8px 10px;
   transition: all 200ms ease;
   width: 100%;
-  color: #717342;
+  color: white;
   font-family: sans-serif;
 }
 
 .dropdown .selected-value input::placeholder {
-  color: #717342;
+  color: white;
+  font-family: "Tekton";
+  font-weight: bold;
+  font-size: 1.25rem;
 }
 
 .dropdown .options {
@@ -486,27 +480,17 @@ button:active {
   -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
   -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 -1px 0 black;
-  background: #d1d395;
-  background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #dfe2ad),
-    color-stop(100%, #d1d395)
-  );
-  background-image: -webkit-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -moz-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -ms-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: -o-linear-gradient(top, #dfe2ad, #d1d395);
-  background-image: linear-gradient(top, #dfe2ad, #d1d395);
+  background: var(--blue);
+  color: white;
   border: 1px solid hsla(0, 0%, 100%, 0.825);
+  border-radius: 4px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
   box-sizing: border-box;
   margin-top: -1px;
   max-height: 200px;
   overflow-y: auto;
   position: absolute;
-  top: 100%;
+  top: -175px;
   width: 100%;
   z-index: 1000;
   -webkit-overflow-scrolling: touch;
