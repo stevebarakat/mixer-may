@@ -1,20 +1,18 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Destination, Meter } from "tone";
+import { Destination } from "tone";
 import VuMeter from "./VuMeter";
-import scale from "../utils/scale";
+import { dBToPercent } from "../../utils/scale";
 
-const masterMeter = new Meter();
-
-function MasterVol() {
+function MasterVol({ state, masterMeter, masterBusChannel }) {
   const requestRef = useRef();
-  const [masterMeterVal, setMasterMeterVal] = useState(0);
+  const [masterMeterVal, setMasterMeterVal] = useState(-12);
   const [masterVol, setMasterVol] = useState(0);
   Destination.connect(masterMeter);
 
   function changeMasterVolume(e) {
     const value = parseInt(e.target.value, 10);
     const v = Math.log(value + 101) / Math.log(113);
-    const sv = scale(v, 0, 1, -100, 12);
+    const sv = dBToPercent(v);
     setMasterVol(Math.round(sv));
     Destination.set({ volume: sv });
   }
@@ -22,15 +20,18 @@ function MasterVol() {
   const animateMeter = useCallback(() => {
     setMasterMeterVal(masterMeter.getValue() + 85);
     requestRef.current = requestAnimationFrame(animateMeter);
-  }, []);
+  }, [masterMeter]);
 
   useEffect(() => {
+    // if (state !== "started")
+    //   setTimeout(() => {
+    //     cancelAnimationFrame(requestRef.current);
+    //     setMasterMeterVal(-100);
+    //   }, 1000);
     requestAnimationFrame(animateMeter);
-    return () => {
-      cancelAnimationFrame(requestRef.current);
-    };
+    return () => cancelAnimationFrame(requestRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [state]);
 
   return (
     <div
@@ -57,8 +58,8 @@ function MasterVol() {
           type="range"
           min={-100}
           max={12}
-          defaultValue={-20}
-          step="1"
+          defaultValue={-32}
+          step="0.1"
           onChange={changeMasterVolume}
         />
       </div>

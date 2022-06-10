@@ -1,6 +1,6 @@
 import React from "react";
 
-function SoloMute({ channel, track, handleSetIsMuted }) {
+export default function SoloMute2({ channel, track, handleSetIsMuted }) {
   return (
     <div className="solo-mute">
       <input
@@ -27,5 +27,3 @@ function SoloMute({ channel, track, handleSetIsMuted }) {
     </div>
   );
 }
-
-export default SoloMute;

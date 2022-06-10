@@ -1,22 +1,20 @@
 import { useRef, useEffect, useCallback } from "react";
-import "./vu-meter.css";
 
 // Settings
+let curVal = 0;
 const max = 100;
-// const width = 10;
-// const height = 300;
 const boxCount = 100;
 const boxCountRed = 20;
 const boxCountYellow = 30;
 const boxGapFraction = 0.2;
-var curVal = 0;
+
 // Colors
-const redOn = "rgba(255,47,30,0.9)";
-const redOff = "rgba(64,12,8,0.9)";
-const yellowOn = "rgba(255,215,5,0.9)";
-const yellowOff = "rgba(64,53,0,0.9)";
-const greenOn = "rgba(53,255,30,0.9)";
-const greenOff = "rgba(13,64,8,0.9)";
+const redOn = "hsla(302, 67%, 54%, 0.9)";
+const redOff = "hsla(302, 67%, 24%, 0.9)";
+const yellowOn = "hsla(47, 99%, 55%, 0.9)";
+const yellowOff = "hsla(47, 99%, 25%, 0.9)";
+const greenOn = "hsla(118, 60%, 63%, 0.9)";
+const greenOff = "hsla(118, 60%, 33%, 0.9)";
 
 function VuMeter({ meterValue, height, width }) {
   const stage = useRef();
@@ -90,7 +88,7 @@ function VuMeter({ meterValue, height, width }) {
     requestAnimationFrame(draw);
 
     return () => cancelAnimationFrame(drawRef.current);
-  }, []);
+  }, [width, height, boxHeight, boxGapY, boxGapX, getBoxColor, boxWidth]);
 
   useEffect(() => {
     stage.current.dataset.volume = meterValue;
