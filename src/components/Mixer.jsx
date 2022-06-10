@@ -87,12 +87,13 @@ function Mixer({ song }) {
     busTwoChannel.current = new Volume().toDestination();
 
     for (let i = 0; i < tracks.length; i++) {
-      channels.current.push(
-        new Channel(tracks[i].volume, tracks[i].pan).connect(Destination)
-      );
-      players.current.push(new Player(tracks[i].path));
-      eqs.current.push(new EQ3());
-      meters.current.push(new Meter());
+      eqs.current = [...eqs.current, new EQ3()];
+      meters.current = [...meters.current, new Meter()];
+      channels.current = [
+        ...channels.current,
+        new Channel(tracks[i].volume, tracks[i].pan).connect(Destination),
+      ];
+      players.current = [...players.current, new Player(tracks[i].path)];
     }
 
     // connect everything

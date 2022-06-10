@@ -30,16 +30,15 @@ function MultiMeter({ state }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
-  let ubu = [];
+  let float32 = [];
   masterMeterVal.map((val) => {
-    return ubu.push(Math.abs(val));
+    return (float32 = [...float32, Math.abs(val)]);
   });
-  console.log(ubu);
-  const ebu = ubu.map((val) => (
+  const multiMeters = float32.map((val) => (
     <VuMeter meterValue={val} height={240} width={20.5} />
   ));
 
-  return <div style={{ display: "flex", gap: "1px" }}>{ebu}</div>;
+  return <div style={{ display: "flex", gap: "1px" }}>{multiMeters}</div>;
 }
 
 export default MultiMeter;
