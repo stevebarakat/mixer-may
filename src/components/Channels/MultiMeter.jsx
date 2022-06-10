@@ -4,7 +4,7 @@ import { GainToAudio } from "tone";
 import VuMeter from "./VuMeter";
 
 function MultiMeter({ state }) {
-  const [masterMeterVal, setMasterMeterVal] = useState([]);
+  const [masterMeterVal, setMasterMeterVal] = useState(new Float32Array());
   const analyser = useRef();
   const requestRef = useRef();
   const gainToAudio = useRef();
@@ -34,8 +34,8 @@ function MultiMeter({ state }) {
   masterMeterVal.map((val) => {
     return (float32 = [...float32, Math.abs(val)]);
   });
-  const multiMeters = float32.map((val) => (
-    <VuMeter meterValue={val} height={240} width={20.5} />
+  const multiMeters = float32.map((val, i) => (
+    <VuMeter key={i} meterValue={val} height={240} width={20.5} />
   ));
 
   return <div style={{ display: "flex", gap: "1px" }}>{multiMeters}</div>;

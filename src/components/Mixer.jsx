@@ -44,7 +44,7 @@ function Mixer({ song }) {
   const busTwoChannel = useRef(null);
   const [state, setState] = useState("stopped");
   const handleSetState = (value) => setState(value);
-  const [meterVals, setMeterVals] = useState([]);
+  const [meterVals, setMeterVals] = useState(new Float32Array());
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [busOneFxOneType, setBusOneFxOneType] = useState(null);
@@ -527,9 +527,9 @@ function Mixer({ song }) {
           masterMeter={masterMeter.current}
           // masterBusChannel={masterBusChannel.current}
         />
-        <div className="multi-meter">
+        {/* <div className="multi-meter">
           <MultiMeter state={state} />
-        </div>
+        </div> */}
       </div>
       <div className="controls-wrap">
         <div className="controls-well">
