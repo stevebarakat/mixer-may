@@ -13,6 +13,7 @@ function ChannelStrip({
   meterVal,
   state,
   toggleBusOne,
+  toggleBusTwo,
 }) {
   const [isMuted, setIsMuted] = useState(track.mute);
   const [volume, setVolume] = useState(0);
@@ -160,15 +161,22 @@ function ChannelStrip({
         <input
           id={`${index}busOne${track.path}`}
           type="checkbox"
-          // onChange={toggleBusOne}
-          // checked={track.busOne}
           onChange={toggleBusOne}
         />
         <label className="label" htmlFor={`${index}busOne${track.path}`}>
           Bus 1
         </label>
       </div>
-
+      <div className="solo-mute">
+        <input
+          id={`${index}busTwo${track.path}`}
+          type="checkbox"
+          onChange={toggleBusTwo}
+        />
+        <label className="label" htmlFor={`${index}busTwo${track.path}`}>
+          Bus 2
+        </label>
+      </div>
       <div className="pfl">
         <input
           id={`postFader${track.path}`}

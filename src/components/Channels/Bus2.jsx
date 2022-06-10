@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import VuMeter from "./VuMeter";
-import { dBToPercent } from "../utils/scale";
+import { dBToPercent } from "../../utils/scale";
 
 export default function Bus2({
   state,
@@ -13,17 +13,19 @@ export default function Bus2({
   const requestRef = useRef();
   const [masterMeterVal, setMasterMeterVal] = useState(-12);
   const [masterVol, setMasterVol] = useState(0);
+  const busTwoActiveBool = busTwoActive.some((bus) => bus === true);
+
   if (busTwoChannel !== null) {
     busTwoChannel.connect(busTwoMeter);
   }
 
   function changeMasterVolume(e) {
-    if (!busTwoActive) return;
+    if (!busTwoActiveBool) return;
     const value = parseInt(e.target.value, 10);
     const v = Math.log(value + 101) / Math.log(113);
     const sv = dBToPercent(v);
     setMasterVol(Math.round(sv));
-    busTwoChannel.set({ volume: value });
+    busTwoChannel.set({ volume: sv });
   }
 
   const animateMeter = useCallback(() => {
@@ -32,29 +34,27 @@ export default function Bus2({
   }, [busTwoMeter]);
 
   useEffect(() => {
-    if (!busTwoActive) {
-      if (state !== "started")
-        setTimeout(() => cancelAnimationFrame(requestRef.current), 1000);
-      return cancelAnimationFrame(requestRef.current);
-    }
+    if (state !== "started")
+      setTimeout(() => cancelAnimationFrame(requestRef.current), 1000);
     requestAnimationFrame(animateMeter);
+    return () => cancelAnimationFrame(requestRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, busTwoActive]);
+  }, [state]);
 
   return (
     <div>
-      {busTwoActive === true ? (
+      {busTwoActiveBool === true ? (
         <>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <select
               onChange={(e) => handleSetBusTwoFxOneChoice(e.target.value)}
               className="effect-select"
             >
-              <option value="fx1">FX1</option>
+              <option value="bs2-fx1">FX1</option>
               <option value="reverb">Reverb</option>
               <option value="delay">Delay</option>
               <option value="chorus">Chorus</option>
-              <option value="phaser">Phaser</option>
+              <option value="chebyshev">Chebyshev</option>
               <option value="pitch-shift">PitchShift</option>
               <option value="compressor">Compressor</option>
             </select>
@@ -64,11 +64,11 @@ export default function Bus2({
               onChange={(e) => handleSetBusTwoFxTwoChoice(e.target.value)}
               className="effect-select"
             >
-              <option value="fx2">FX2</option>
+              <option value="bs2-fx2">FX2</option>
               <option value="reverb">Reverb</option>
               <option value="delay">Delay</option>
               <option value="chorus">Chorus</option>
-              <option value="phaser">Phaser</option>
+              <option value="chebyshev">Chebyshev</option>
               <option value="pitch-shift">PitchShift</option>
               <option value="compressor">Compressor</option>
             </select>

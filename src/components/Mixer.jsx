@@ -23,6 +23,7 @@ import PitchShifter from "./FX/PitchShift";
 import Compress from "./FX/Compressor";
 import MasterVol from "./Channels/MasterVol";
 import Bus1 from "./Channels/Bus1";
+import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import Chebyshever from "./FX/Chebyshev";
@@ -38,24 +39,32 @@ function Mixer({ song }) {
   const masterMeter = useRef(null);
   const busOneMeter = useRef(null);
   const busOneChannel = useRef(null);
+  const busTwoMeter = useRef(null);
+  const busTwoChannel = useRef(null);
+  const [state, setState] = useState("stopped");
+  const handleSetState = (value) => setState(value);
   const [meterVals, setMeterVals] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
   const [busOneFxOneType, setBusOneFxOneType] = useState(null);
   const [busOneFxOneChoice, setBusOneFxOneChoice] = useState(null);
   const handleSetBusOneFxOneChoice = (value) => setBusOneFxOneChoice(value);
   const [busOneFxTwoType, setBusOneFxTwoType] = useState(null);
   const [busOneFxTwoChoice, setBusOneFxTwoChoice] = useState(null);
   const handleSetBusOneFxTwoChoice = (value) => setBusOneFxTwoChoice(value);
-  const [state, setState] = useState("stopped");
-  const handleSetState = (value) => setState(value);
-  const [busOneActive, setBusOneActive] = useState([
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [busOneActive, setBusOneActive] = useState([]);
   const [busOneFxOneControls, setBusOneFxOneControls] = useState(null);
   const [busOneFxTwoControls, setBusOneFxTwoControls] = useState(null);
+
+  const [busTwoFxOneType, setBusTwoFxOneType] = useState(null);
+  const [busTwoFxOneChoice, setBusTwoFxOneChoice] = useState(null);
+  const handleSetBusTwoFxOneChoice = (value) => setBusTwoFxOneChoice(value);
+  const [busTwoFxTwoType, setBusTwoFxTwoType] = useState(null);
+  const [busTwoFxTwoChoice, setBusTwoFxTwoChoice] = useState(null);
+  const handleSetBusTwoFxTwoChoice = (value) => setBusTwoFxTwoChoice(value);
+  const [busTwoActive, setBusTwoActive] = useState([]);
+  const [busTwoFxOneControls, setBusTwoFxOneControls] = useState(null);
+  const [busTwoFxTwoControls, setBusTwoFxTwoControls] = useState(null);
 
   // make sure song stops at end
   if (t.seconds > song.end) {
@@ -71,8 +80,10 @@ function Mixer({ song }) {
     // create audio nodes
     masterMeter.current = new Meter();
     busOneMeter.current = new Meter();
+    busTwoMeter.current = new Meter();
 
     busOneChannel.current = new Volume().toDestination();
+    busTwoChannel.current = new Volume().toDestination();
 
     for (let i = 0; i < tracks.length; i++) {
       channels.current.push(
@@ -129,17 +140,24 @@ function Mixer({ song }) {
   }, [state]);
 
   // when busOneFxOneChoice is selected it initiates new FX
-  choices.current = [busOneFxOneChoice, busOneFxTwoChoice];
+  choices.current = [
+    busOneFxOneChoice,
+    busOneFxTwoChoice,
+    busTwoFxOneChoice,
+    busTwoFxTwoChoice,
+  ];
   useEffect(() => {
     choices.current.forEach((choice, index) => {
       const i = index + 1;
       switch (choice) {
-        case "fx1":
-        case "fx2":
+        case "bs1-fx1":
+        case "bs1-fx2":
           break;
         case "reverb":
           i === 1 && setBusOneFxOneType(new Reverb({ wet: 1 }).toDestination());
           i === 2 && setBusOneFxTwoType(new Reverb({ wet: 1 }).toDestination());
+          i === 3 && setBusTwoFxOneType(new Reverb({ wet: 1 }).toDestination());
+          i === 4 && setBusTwoFxTwoType(new Reverb({ wet: 1 }).toDestination());
           break;
         case "delay":
           i === 1 &&
@@ -150,6 +168,18 @@ function Mixer({ song }) {
             );
           i === 2 &&
             setBusOneFxTwoType(
+              new FeedbackDelay({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 3 &&
+            setBusTwoFxOneType(
+              new FeedbackDelay({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 4 &&
+            setBusTwoFxTwoType(
               new FeedbackDelay({
                 wet: 1,
               }).toDestination()
@@ -168,6 +198,18 @@ function Mixer({ song }) {
                 wet: 1,
               }).toDestination()
             );
+          i === 3 &&
+            setBusTwoFxOneType(
+              new Chorus({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 4 &&
+            setBusTwoFxTwoType(
+              new Chorus({
+                wet: 1,
+              }).toDestination()
+            );
           break;
         case "chebyshev":
           i === 1 &&
@@ -178,6 +220,18 @@ function Mixer({ song }) {
             );
           i === 2 &&
             setBusOneFxTwoType(
+              new Chebyshev({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 3 &&
+            setBusTwoFxOneType(
+              new Chebyshev({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 4 &&
+            setBusTwoFxTwoType(
               new Chebyshev({
                 wet: 1,
               }).toDestination()
@@ -196,6 +250,18 @@ function Mixer({ song }) {
                 wet: 1,
               }).toDestination()
             );
+          i === 3 &&
+            setBusTwoFxOneType(
+              new PitchShift({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 4 &&
+            setBusTwoFxTwoType(
+              new PitchShift({
+                wet: 1,
+              }).toDestination()
+            );
           break;
         case "compressor":
           i === 1 &&
@@ -204,8 +270,20 @@ function Mixer({ song }) {
                 wet: 1,
               }).toDestination()
             );
-          i == 2 &&
+          i === 2 &&
             setBusOneFxTwoType(
+              new Compressor({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 3 &&
+            setBusTwoFxOneType(
+              new Compressor({
+                wet: 1,
+              }).toDestination()
+            );
+          i === 4 &&
+            setBusTwoFxTwoType(
               new Compressor({
                 wet: 1,
               }).toDestination()
@@ -215,73 +293,131 @@ function Mixer({ song }) {
           break;
       }
     });
-  }, [busOneFxOneChoice, busOneFxTwoChoice]);
+  }, [
+    busOneFxOneChoice,
+    busOneFxTwoChoice,
+    busTwoFxOneChoice,
+    busTwoFxTwoChoice,
+  ]);
 
   useEffect(() => {
     choices.current.forEach((choice, index) => {
       const i = index + 1;
       switch (choice) {
-        case "fx1":
+        case "bs1-fx1":
           setBusOneFxOneControls(null);
           break;
-        case "fx2":
+        case "bs1-fx2":
           setBusOneFxTwoControls(null);
+          break;
+        case "bs2-fx1":
+          setBusTwoFxOneControls(null);
+          break;
+        case "bs2-fx2":
+          setBusTwoFxTwoControls(null);
+          break;
         case "delay":
           i === 1 &&
             setBusOneFxOneControls(<Delay controls={busOneFxOneType} />);
           i === 2 &&
             setBusOneFxTwoControls(<Delay controls={busOneFxTwoType} />);
+          i === 3 &&
+            setBusTwoFxOneControls(<Delay controls={busTwoFxOneType} />);
+          i === 4 &&
+            setBusTwoFxTwoControls(<Delay controls={busTwoFxTwoType} />);
           break;
         case "reverb":
           i === 1 &&
             setBusOneFxOneControls(<Reverber controls={busOneFxOneType} />);
           i === 2 &&
             setBusOneFxTwoControls(<Reverber controls={busOneFxTwoType} />);
+          i === 3 &&
+            setBusTwoFxOneControls(<Reverber controls={busTwoFxOneType} />);
+          i === 4 &&
+            setBusTwoFxTwoControls(<Reverber controls={busTwoFxTwoType} />);
           break;
         case "chebyshev":
           i === 1 &&
             setBusOneFxOneControls(<Chebyshever controls={busOneFxOneType} />);
           i === 2 &&
             setBusOneFxTwoControls(<Chebyshever controls={busOneFxTwoType} />);
+          i === 3 &&
+            setBusTwoFxOneControls(<Chebyshever controls={busTwoFxOneType} />);
+          i === 4 &&
+            setBusTwoFxTwoControls(<Chebyshever controls={busTwoFxTwoType} />);
           break;
         case "pitch-shift":
           i === 1 &&
             setBusOneFxOneControls(<PitchShifter controls={busOneFxOneType} />);
           i === 2 &&
             setBusOneFxTwoControls(<PitchShifter controls={busOneFxTwoType} />);
+          i === 3 &&
+            setBusTwoFxOneControls(<PitchShifter controls={busTwoFxOneType} />);
+          i === 4 &&
+            setBusTwoFxTwoControls(<PitchShifter controls={busTwoFxTwoType} />);
           break;
         case "chorus":
           i === 1 &&
             setBusOneFxOneControls(<Choruser controls={busOneFxOneType} />);
           i === 2 &&
             setBusOneFxTwoControls(<Choruser controls={busOneFxTwoType} />);
+          i === 3 &&
+            setBusTwoFxOneControls(<Choruser controls={busTwoFxOneType} />);
+          i === 4 &&
+            setBusTwoFxTwoControls(<Choruser controls={busTwoFxTwoType} />);
           break;
         case "compressor":
           i === 1 &&
             setBusOneFxOneControls(<Compress controls={busOneFxOneType} />);
           i === 2 &&
             setBusOneFxTwoControls(<Compress controls={busOneFxTwoType} />);
+          i === 3 &&
+            setBusTwoFxOneControls(<Compress controls={busTwoFxOneType} />);
+          i === 4 &&
+            setBusTwoFxTwoControls(<Compress controls={busTwoFxTwoType} />);
           break;
         default:
           break;
       }
     });
-  }, [busOneFxOneChoice, busOneFxOneType, busOneFxTwoChoice, busOneFxTwoType]);
+  }, [
+    busOneFxOneChoice,
+    busOneFxOneType,
+    busOneFxTwoChoice,
+    busOneFxTwoType,
+    busTwoFxOneChoice,
+    busTwoFxOneType,
+    busTwoFxTwoChoice,
+    busTwoFxTwoType,
+  ]);
 
   useEffect(() => {
-    console.log(busOneFxOneChoice);
-    if (busOneFxOneChoice === "fx1") busOneFxOneType.disconnect();
+    if (busOneFxOneChoice === "bs1-fx1") busOneFxOneType.disconnect();
     if (busOneFxOneType === null || busOneChannel.current === null) return;
     busOneChannel.current.connect(busOneFxOneType);
     return () => busOneFxOneType.disconnect();
   }, [busOneFxOneType, busOneFxOneChoice]);
 
   useEffect(() => {
-    if (busOneFxTwoChoice === "fx2") busOneFxTwoType.disconnect();
+    if (busOneFxTwoChoice === "bs1-fx2") busOneFxTwoType.disconnect();
     if (busOneFxTwoType === null || busOneChannel.current === null) return;
     busOneChannel.current.connect(busOneFxTwoType);
     return () => busOneFxTwoType.disconnect();
   }, [busOneFxTwoType, busOneFxTwoChoice]);
+
+  useEffect(() => {
+    if (busTwoFxOneChoice === "bs1-fx1") busTwoFxOneType.disconnect();
+    if (busTwoFxOneType === null || busTwoChannel.current === null) return;
+    busTwoChannel.current.connect(busTwoFxOneType);
+    return () => busTwoFxOneType.disconnect();
+  }, [busTwoFxOneType, busTwoFxOneChoice]);
+
+  useEffect(() => {
+    if (busTwoFxTwoChoice === "bs1-fx2") busTwoFxTwoType.disconnect();
+    if (busTwoFxTwoType === null || busTwoChannel.current === null) return;
+    busTwoChannel.current.connect(busTwoFxTwoType);
+    return () => busTwoFxTwoType.disconnect();
+  }, [busTwoFxTwoType, busTwoFxTwoChoice]);
 
   function toggleBusOne(e) {
     const id = parseInt(e.target.id[0], 10);
@@ -296,6 +432,25 @@ function Mixer({ song }) {
           busOneActive[id] = false;
           setBusOneActive(busOneActive);
           channels.current[id].disconnect(busOneChannel.current);
+          channels.current[id].connect(Destination);
+        }
+      }
+    });
+  }
+
+  function toggleBusTwo(e) {
+    const id = parseInt(e.target.id[0], 10);
+    channels.current.forEach((channel, i) => {
+      if (id === i) {
+        if (e.target.checked) {
+          busTwoActive[id] = true;
+          setBusTwoActive(busTwoActive);
+          channels.current[id].disconnect(Destination);
+          channels.current[id].connect(busTwoChannel.current);
+        } else {
+          busTwoActive[id] = false;
+          setBusTwoActive(busTwoActive);
+          channels.current[id].disconnect(busTwoChannel.current);
           channels.current[id].connect(Destination);
         }
       }
@@ -330,6 +485,8 @@ function Mixer({ song }) {
       </div>
       {busOneFxOneControls}
       {busOneFxTwoControls}
+      {busTwoFxOneControls}
+      {busTwoFxTwoControls}
       <div className="mixer">
         {tracks.map((track, i) => {
           return (
@@ -343,6 +500,7 @@ function Mixer({ song }) {
               tracks={tracks}
               state={state}
               toggleBusOne={toggleBusOne}
+              toggleBusTwo={toggleBusTwo}
             />
           );
         })}
@@ -353,6 +511,14 @@ function Mixer({ song }) {
           handleSetBusOneFxOneChoice={handleSetBusOneFxOneChoice}
           handleSetBusOneFxTwoChoice={handleSetBusOneFxTwoChoice}
           busOneMeter={busOneMeter.current}
+        />
+        <Bus2
+          state={state}
+          busTwoActive={busTwoActive}
+          busTwoChannel={busTwoChannel.current}
+          handleSetBusTwoFxOneChoice={handleSetBusTwoFxOneChoice}
+          handleSetBusTwoFxTwoChoice={handleSetBusTwoFxTwoChoice}
+          busTwoMeter={busTwoMeter.current}
         />
         <MasterVol
           state={state}
