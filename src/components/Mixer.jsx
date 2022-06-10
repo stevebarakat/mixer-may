@@ -27,6 +27,7 @@ import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import Chebyshever from "./FX/Chebyshev";
+import MultiMeter from "./Channels/MultiMeter";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
@@ -525,6 +526,9 @@ function Mixer({ song }) {
           masterMeter={masterMeter.current}
           // masterBusChannel={masterBusChannel.current}
         />
+        <div className="multi-meter">
+          <MultiMeter state={state} />
+        </div>
       </div>
       <div className="controls-wrap">
         <div className="controls-well">

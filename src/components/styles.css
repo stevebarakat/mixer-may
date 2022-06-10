@@ -111,6 +111,7 @@ body {
 }
 
 .mixer {
+  position: relative;
   display: flex;
   gap: 0.25px;
   flex-wrap: wrap;
@@ -361,6 +362,17 @@ button:active {
   padding: 4px;
   background: hsl(355, 89%, 81%);
   border-radius: 4px;
+}
+
+.multi-meter {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.multi-meter .vu-meter {
+  padding: 0;
 }
 
 .channel:nth-of-type(5n + 1) .vu-meter {
@@ -716,6 +728,7 @@ button:active {
   max-width: 100px;
   margin: 0 2px;
   background: var(--redLinear);
+  padding-top: 12px;
 }
 
 .channel:nth-of-type(5n + 1) .fader-wrap {
@@ -741,7 +754,6 @@ button:active {
 
 .pan-labels {
   color: #121212;
-  width: 92px;
   display: flex;
   padding: 0 4px;
   justify-content: space-between;
@@ -758,7 +770,8 @@ button:active {
   text-transform: capitalize;
 }
 
-.knob {
+#low {
+  padding-bottom: 16px;
 }
 
 .eq-wrap {

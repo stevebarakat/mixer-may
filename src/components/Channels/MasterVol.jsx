@@ -23,11 +23,6 @@ function MasterVol({ state, masterMeter, masterBusChannel }) {
   }, [masterMeter]);
 
   useEffect(() => {
-    // if (state !== "started")
-    //   setTimeout(() => {
-    //     cancelAnimationFrame(requestRef.current);
-    //     setMasterMeterVal(-100);
-    //   }, 1000);
     requestAnimationFrame(animateMeter);
     return () => cancelAnimationFrame(requestRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -78,7 +78,7 @@ function ChannelStrip({
   return (
     <div className="channel">
       <div className="fader-wrap">
-        <div className="fx-labels">EQ</div>
+        <div className="pan-labels">EQ</div>
         <div id="hi">
           <input type="hidden" name="actionName" value="changeHighEqLevel" />
           <Knob
