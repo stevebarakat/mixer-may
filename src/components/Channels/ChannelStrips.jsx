@@ -75,6 +75,12 @@ function ChannelStrip({
     setLowEqLevel(val);
   }
 
+  // THIS IS WHERE LOW EQ IS SET
+  function changeBusOneSendAmount(val) {
+    console.log("channel", channel);
+    channel.volume.value = val;
+  }
+
   return (
     <div className="channel">
       <div className="fader-wrap">
@@ -131,6 +137,24 @@ function ChannelStrip({
             clampMax={320}
             defaultValue={track.lowEqLevel}
             value={lowEqLevel}
+            step={0.01}
+            skin={skin}
+            track={track}
+          />
+        </div>
+        <div className="pan-labels">Send</div>
+        <div id="low">
+          <input type="hidden" name="actionName" value="changeLowEqLevel" />
+          <Knob
+            onChange={changeBusOneSendAmount}
+            className="knob"
+            min={-8}
+            max={8}
+            preciseMode={true}
+            unlockDistance={0}
+            rotateDegrees={180}
+            clampMin={40}
+            clampMax={320}
             step={0.01}
             skin={skin}
             track={track}
