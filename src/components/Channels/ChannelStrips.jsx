@@ -17,9 +17,6 @@ function ChannelStrip({
 }) {
   const [isMuted, setIsMuted] = useState(track.mute);
   const [volume, setVolume] = useState(0);
-  const preFader = meterVal;
-  const postFader = meterVal + volume;
-  const [isPostFader, setIsPostFader] = useState(true);
   const [highEqLevel, setHighEqLevel] = useState(track.highEqLevel);
   const [midEqLevel, setMidEqLevel] = useState(track.midEqLevel);
   const [lowEqLevel, setLowEqLevel] = useState(track.lowEqLevel);
@@ -73,12 +70,6 @@ function ChannelStrip({
     eq.low.value = val;
 
     setLowEqLevel(val);
-  }
-
-  // THIS IS WHERE LOW EQ IS SET
-  function changeBusOneSendAmount(val) {
-    console.log("channel", channel);
-    channel.volume.value = val;
   }
 
   return (
@@ -142,24 +133,6 @@ function ChannelStrip({
             track={track}
           />
         </div>
-        <div className="pan-labels">Send</div>
-        <div id="low">
-          <input type="hidden" name="actionName" value="changeLowEqLevel" />
-          <Knob
-            onChange={changeBusOneSendAmount}
-            className="knob"
-            min={-8}
-            max={8}
-            preciseMode={true}
-            unlockDistance={35}
-            rotateDegrees={180}
-            clampMin={40}
-            clampMax={320}
-            step={0.01}
-            skin={skin}
-            track={track}
-          />
-        </div>
       </div>
       <div className="solo-mute">
         <input
@@ -200,19 +173,6 @@ function ChannelStrip({
         </label>
       </div>
 
-      <div className="pfl">
-        <input
-          id={`postFader${track.path}`}
-          type="checkbox"
-          onChange={(e) => {
-            setIsPostFader(!e.target.checked);
-          }}
-        />
-        <label className="label" htmlFor={`postFader${track.path}`}>
-          {isPostFader ? "POST" : "PRE"}
-        </label>
-      </div>
-
       <div className="fader-wrap">
         <div>
           <input
@@ -239,11 +199,7 @@ function ChannelStrip({
           />
         </div>
         <div className="levels-wrap">
-          <VuMeter
-            meterValue={isPostFader ? postFader : preFader}
-            height={300}
-            width={10}
-          />
+          <VuMeter meterValue={meterVal} height={300} width={10} />
         </div>
         <div className="vol-wrap">
           <input

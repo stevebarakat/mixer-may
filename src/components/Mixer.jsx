@@ -27,7 +27,6 @@ import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import Chebyshever from "./FX/Chebyshev";
-import MultiMeter from "./Channels/MultiMeter";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
@@ -37,7 +36,6 @@ function Mixer({ song }) {
   const choices = useRef([]);
   const eqs = useRef([]);
   const meters = useRef([]);
-  const busses = useRef([]);
   const masterMeter = useRef(null);
   const busOneMeter = useRef(null);
   const busOneChannel = useRef(null);
@@ -91,7 +89,6 @@ function Mixer({ song }) {
     for (let i = 0; i < tracks.length; i++) {
       eqs.current = [...eqs.current, new EQ3()];
       meters.current = [...meters.current, new Meter()];
-      busses.current = [...busses.current, new Channel()];
       channels.current = [
         ...channels.current,
         new Channel(tracks[i].volume, tracks[i].pan).connect(Destination),
@@ -106,10 +103,6 @@ function Mixer({ song }) {
         .sync()
         .start()
     );
-
-    busses.current.forEach((bus) => {
-      bus.send("busOne");
-    });
 
     return () => {
       t.stop();

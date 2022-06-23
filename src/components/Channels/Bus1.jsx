@@ -43,38 +43,36 @@ function Bus1({
 
   return (
     <div>
-      {busOneActiveBool === true ? (
-        <>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <select
-              onChange={(e) => handleSetBusOneFxOneChoice(e.target.value)}
-              className="effect-select"
-            >
-              <option value="bs1-fx1">FX1</option>
-              <option value="reverb">Reverb</option>
-              <option value="delay">Delay</option>
-              <option value="chorus">Chorus</option>
-              <option value="chebyshev">Chebyshev</option>
-              <option value="pitch-shift">PitchShift</option>
-              <option value="compressor">Compressor</option>
-            </select>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <select
-              onChange={(e) => handleSetBusOneFxTwoChoice(e.target.value)}
-              className="effect-select"
-            >
-              <option value="bs1-fx2">FX2</option>
-              <option value="reverb">Reverb</option>
-              <option value="delay">Delay</option>
-              <option value="chorus">Chorus</option>
-              <option value="chebyshev">Chebyshev</option>
-              <option value="pitch-shift">PitchShift</option>
-              <option value="compressor">Compressor</option>
-            </select>
-          </div>
-        </>
-      ) : null}
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <select
+          onChange={(e) => handleSetBusOneFxOneChoice(e.target.value)}
+          className="effect-select"
+          disabled={!busOneActiveBool}
+        >
+          <option value="bs1-fx1">FX1</option>
+          <option value="reverb">Reverb</option>
+          <option value="delay">Delay</option>
+          <option value="chorus">Chorus</option>
+          <option value="chebyshev">Chebyshev</option>
+          <option value="pitch-shift">PitchShift</option>
+          <option value="compressor">Compressor</option>
+        </select>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <select
+          onChange={(e) => handleSetBusOneFxTwoChoice(e.target.value)}
+          className="effect-select"
+          disabled={!busOneActiveBool}
+        >
+          <option value="bs1-fx2">FX2</option>
+          <option value="reverb">Reverb</option>
+          <option value="delay">Delay</option>
+          <option value="chorus">Chorus</option>
+          <option value="chebyshev">Chebyshev</option>
+          <option value="pitch-shift">PitchShift</option>
+          <option value="compressor">Compressor</option>
+        </select>
+      </div>
 
       <div
         className="fader-wrap"
