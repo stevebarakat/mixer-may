@@ -37,6 +37,7 @@ function Mixer({ song }) {
   const choices = useRef([]);
   const eqs = useRef([]);
   const meters = useRef([]);
+  const busses = useRef([]);
   const masterMeter = useRef(null);
   const busOneMeter = useRef(null);
   const busOneChannel = useRef(null);
@@ -85,11 +86,12 @@ function Mixer({ song }) {
 
     busOneChannel.current = new Channel().toDestination();
     busTwoChannel.current = new Volume().toDestination();
-    // busOneChannel.current.receive("busOne");
+    busOneChannel.current.receive("busOne");
 
     for (let i = 0; i < tracks.length; i++) {
       eqs.current = [...eqs.current, new EQ3()];
       meters.current = [...meters.current, new Meter()];
+      busses.current = [...busses.current, new Channel()];
       channels.current = [
         ...channels.current,
         new Channel(tracks[i].volume, tracks[i].pan).connect(Destination),
@@ -105,8 +107,8 @@ function Mixer({ song }) {
         .start()
     );
 
-    channels.current.forEach((channel) => {
-      channel.send("busOne");
+    busses.current.forEach((bus) => {
+      bus.send("busOne");
     });
 
     return () => {
@@ -413,14 +415,14 @@ function Mixer({ song }) {
   }, [busOneFxTwoType, busOneFxTwoChoice]);
 
   useEffect(() => {
-    if (busTwoFxOneChoice === "bs1-fx1") busTwoFxOneType.disconnect();
+    if (busTwoFxOneChoice === "bs2-fx1") busTwoFxOneType.disconnect();
     if (busTwoFxOneType === null || busTwoChannel.current === null) return;
     busTwoChannel.current.connect(busTwoFxOneType);
     return () => busTwoFxOneType.disconnect();
   }, [busTwoFxOneType, busTwoFxOneChoice]);
 
   useEffect(() => {
-    if (busTwoFxTwoChoice === "bs1-fx2") busTwoFxTwoType.disconnect();
+    if (busTwoFxTwoChoice === "bs2-fx2") busTwoFxTwoType.disconnect();
     if (busTwoFxTwoType === null || busTwoChannel.current === null) return;
     busTwoChannel.current.connect(busTwoFxTwoType);
     return () => busTwoFxTwoType.disconnect();

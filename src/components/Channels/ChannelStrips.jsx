@@ -92,7 +92,7 @@ function ChannelStrip({
             min={-8}
             max={8}
             preciseMode={true}
-            unlockDistance={0}
+            unlockDistance={35}
             rotateDegrees={180}
             clampMin={40}
             clampMax={320}
@@ -112,7 +112,7 @@ function ChannelStrip({
             min={-8}
             max={8}
             preciseMode={true}
-            unlockDistance={0}
+            unlockDistance={35}
             rotateDegrees={180}
             clampMin={40}
             clampMax={320}
@@ -131,7 +131,7 @@ function ChannelStrip({
             min={-8}
             max={8}
             preciseMode={true}
-            unlockDistance={0}
+            unlockDistance={35}
             rotateDegrees={180}
             clampMin={40}
             clampMax={320}
@@ -151,7 +151,7 @@ function ChannelStrip({
             min={-8}
             max={8}
             preciseMode={true}
-            unlockDistance={0}
+            unlockDistance={35}
             rotateDegrees={180}
             clampMin={40}
             clampMax={320}
