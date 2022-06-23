@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import Mixer from "./components/Mixer";
-import Dropdown from "./components/Dropdown";
 import { ninteenOne } from "./songs/1901";
 import { justDance } from "./songs/justDance";
 import { aDayInTheLife } from "./songs/aDayInTheLife";
@@ -17,11 +16,9 @@ import { numb } from "./songs/numb";
 import { underPressure } from "./songs/underPressure";
 import { lithium } from "./songs/lithium";
 import { beatIt } from "./songs/beatIt";
-import options from "./songs/options";
+import "./components/styles.css";
 
 function App() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const handleSetIsLoaded = (value) => setIsLoaded(value);
   const [song, setSong] = useState(
     () => JSON.parse(localStorage.getItem("song")) ?? ninteenOne
   );
@@ -37,9 +34,8 @@ function App() {
     }
   }, [song]);
 
-  function handleChange(value) {
-    setIsLoaded(false);
-    switch (value) {
+  function handleChange(e) {
+    switch (e.target.value) {
       case "1901":
         setSong(ninteenOne);
         break;
@@ -96,11 +92,7 @@ function App() {
 
   return (
     <>
-      <Mixer
-        song={song}
-        isLoaded={isLoaded}
-        handleSetIsLoaded={handleSetIsLoaded}
-      />
+      <Mixer song={song} />
       <div
         style={{
           display: "flex",
@@ -111,14 +103,27 @@ function App() {
         <label className="hidden" htmlFor="song-select">
           Choose a song:
         </label>
-        <Dropdown
-          options={options}
-          id="id"
-          label="name"
-          prompt="Search for a song..."
-          value={song}
-          onChange={(val) => handleChange(val.slug)}
-        />
+
+        <select
+          className="song-select"
+          name="pets"
+          id="pet-select"
+          onChange={handleChange}
+        >
+          <option value="">Select A Song...</option>
+          <option value="roxanne">The Police - Roxanne</option>
+          <option value="creep">Radiohead - Creep</option>
+          <option value="ninteenOne">Phoenix - 1901</option>
+          <option value="dont-look-back">
+            Oasis - Don't Look Back In Anger
+          </option>
+          <option value="lithium">Nirvana - Lithum (alternate take)</option>
+          <option value="borderline">Madonna - Borderline</option>
+          <option value="a-day-in-the-life">
+            The Beatles - A Day In The Life
+          </option>
+          <option value="just-dance">Lady Gaga - Just Dance</option>
+        </select>
       </div>
     </>
   );
