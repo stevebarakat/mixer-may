@@ -7,7 +7,7 @@ export const teenageRiot = {
   location: "New York City, NY",
   bpm: 156,
   start: 0,
-  end: 490,
+  end: 420,
   tracks: [
     {
       name: "Drums 1",

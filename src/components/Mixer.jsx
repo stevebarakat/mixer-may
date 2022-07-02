@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   loaded,
   Player,
@@ -419,9 +419,6 @@ function Mixer({ song }) {
   // wait for the buffers to load
   return isLoaded === false ? (
     <div className="loader-wrap">
-      <div className="logo-wrap">
-        <img src="/remix.svg" alt="remix" width="500" />
-      </div>
       <span>
         Loading: {song.artist} - {song.name}{" "}
       </span>
@@ -429,19 +426,6 @@ function Mixer({ song }) {
     </div>
   ) : (
     <div className="console">
-      <div className="header-wrap">
-        <div className="logo-wrap">
-          <img src="/remix.svg" alt="remix" width="600" />
-          <p style={{ fontWeight: "bold" }}>version 0.0.0.0.1</p>
-        </div>
-        <div className="song-info">
-          <p>Artist: {song.artist}</p>
-          <p>Song:{song.name}</p>
-          <p>Year:{song.year}</p>
-          <p>Studio:{song.studio}</p>
-          <p>Location:{song.location}</p>
-        </div>
-      </div>
       {busOneFxOneControls}
       {busOneFxTwoControls}
       {busTwoFxOneControls}

@@ -687,6 +687,16 @@ button:active {
   gap: 24px;
   margin-bottom: 4px;
 }
+.footer-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+}
+.logo {
+  font-size: 10rem;
+  font-weight: 900;
+  letter-spacing: -0.5rem;
+}
 .logo-wrap {
   margin-botton: 0;
 }
