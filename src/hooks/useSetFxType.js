@@ -9,12 +9,7 @@ import {
 } from "tone";
 
 export default function useSetFxType(choices) {
-  const [
-    busOneFxOneChoice,
-    busOneFxTwoChoice,
-    busTwoFxOneChoice,
-    busTwoFxTwoChoice,
-  ] = choices;
+  const [busChoices] = choices;
 
   const [busOneFxOneType, setBusOneFxOneType] = useState(null);
 
@@ -42,12 +37,16 @@ export default function useSetFxType(choices) {
             setBusOneFxOneType(
               new FeedbackDelay({
                 wet: 1,
+                delayTime: 2.5,
+                feedback: 0.5,
               }).toDestination()
             );
           i === 2 &&
             setBusOneFxTwoType(
               new FeedbackDelay({
                 wet: 1,
+                delayTime: 0.5,
+                feedback: 0.5,
               }).toDestination()
             );
           i === 3 &&
@@ -172,11 +171,6 @@ export default function useSetFxType(choices) {
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    busOneFxOneChoice,
-    busOneFxTwoChoice,
-    busTwoFxOneChoice,
-    busTwoFxTwoChoice,
-  ]);
+  }, [busChoices]);
   return [busOneFxOneType, busOneFxTwoType, busTwoFxOneType, busTwoFxTwoType];
 }

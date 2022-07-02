@@ -4,12 +4,6 @@ import {
   Player,
   EQ3,
   Channel,
-  Reverb,
-  Chorus,
-  Compressor,
-  PitchShift,
-  Chebyshev,
-  FeedbackDelay,
   Transport as t,
   Destination,
   Volume,
@@ -22,7 +16,6 @@ import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import useSetFxType from "../hooks/useSetFxType";
-import useSetFxControls from "../hooks/useSetFxControls";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
@@ -36,23 +29,15 @@ function Mixer({ song }) {
   const handleSetState = (value) => setState(value);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [busOneFxOneChoice, setBusOneFxOneChoice] = useState(null);
-  const handleSetBusOneFxOneChoice = (value) => setBusOneFxOneChoice(value);
-  const [busOneFxTwoChoice, setBusOneFxTwoChoice] = useState(null);
-  const handleSetBusOneFxTwoChoice = (value) => setBusOneFxTwoChoice(value);
+  const [busChoices, setBusChoices] = useState([]);
+  const handleSetBusChoices = (value) => setBusChoices(value);
   const [busOneActive, setBusOneActive] = useState([]);
-
-  const [busTwoFxOneChoice, setBusTwoFxOneChoice] = useState(null);
-  const handleSetBusTwoFxOneChoice = (value) => setBusTwoFxOneChoice(value);
-  const [busTwoFxTwoChoice, setBusTwoFxTwoChoice] = useState(null);
-  const handleSetBusTwoFxTwoChoice = (value) => setBusTwoFxTwoChoice(value);
   const [busTwoActive, setBusTwoActive] = useState([]);
 
   useEffect(() => {
     // create audio nodes
-    busOneChannel.current = new Channel().toDestination();
+    busOneChannel.current = new Volume().toDestination();
     busTwoChannel.current = new Volume().toDestination();
-    busOneChannel.current.receive("busOne");
 
     for (let i = 0; i < tracks.length; i++) {
       eqs.current = [...eqs.current, new EQ3()];
@@ -85,57 +70,19 @@ function Mixer({ song }) {
     loaded().then(() => setIsLoaded(true));
   }, [setIsLoaded]);
 
-  // when busOneFxOneChoice is selected it initiates new FX
-  choices.current = [
-    busOneFxOneChoice,
-    busOneFxTwoChoice,
-    busTwoFxOneChoice,
-    busTwoFxTwoChoice,
-  ];
+  console.log("busChoices", busChoices);
 
   const [busOneFxOneType, busOneFxTwoType, busTwoFxOneType, busTwoFxTwoType] =
-    useSetFxType(choices.current);
-
-  const [
-    busOneFxOneControls,
-    busOneFxTwoControls,
-    busTwoFxOneControls,
-    busTwoFxTwoControls,
-  ] = useSetFxControls(
-    choices.current,
-    busOneFxOneType,
-    busOneFxTwoType,
-    busTwoFxOneType,
-    busTwoFxTwoType
-  );
+    useSetFxType(busChoices);
 
   useEffect(() => {
-    if (busOneFxOneChoice === "bs1-fx1") busOneFxOneType.disconnect();
-    if (busOneFxOneType === null || busOneChannel.current === null) return;
-    busOneChannel.current.connect(busOneFxOneType);
-    return () => busOneFxOneType.disconnect();
-  }, [busOneFxOneType, busOneFxOneChoice]);
-
-  useEffect(() => {
-    if (busOneFxTwoChoice === "bs1-fx2") busOneFxTwoType.disconnect();
-    if (busOneFxTwoType === null || busOneChannel.current === null) return;
-    busOneChannel.current.connect(busOneFxTwoType);
-    return () => busOneFxTwoType.disconnect();
-  }, [busOneFxTwoType, busOneFxTwoChoice]);
-
-  useEffect(() => {
-    if (busTwoFxOneChoice === "bs2-fx1") busTwoFxOneType.disconnect();
-    if (busTwoFxOneType === null || busTwoChannel.current === null) return;
-    busTwoChannel.current.connect(busTwoFxOneType);
-    return () => busTwoFxOneType.disconnect();
-  }, [busTwoFxOneType, busTwoFxOneChoice]);
-
-  useEffect(() => {
-    if (busTwoFxTwoChoice === "bs2-fx2") busTwoFxTwoType.disconnect();
-    if (busTwoFxTwoType === null || busTwoChannel.current === null) return;
-    busTwoChannel.current.connect(busTwoFxTwoType);
-    return () => busTwoFxTwoType.disconnect();
-  }, [busTwoFxTwoType, busTwoFxTwoChoice]);
+    busChoices.forEach((choice, i) => {
+      if (choice === `bs${i}-fx${i}`) busOneFxOneType.disconnect();
+      if (busOneFxOneType === null || busOneChannel.current === null) return;
+      busOneChannel.current.connect(busOneFxOneType);
+      return () => busOneFxOneType.disconnect();
+    });
+  }, [busOneFxOneType, busChoices]);
 
   function toggleBusOne(e) {
     const id = parseInt(e.target.id[0], 10);
@@ -187,10 +134,6 @@ function Mixer({ song }) {
     </div>
   ) : (
     <div className="console">
-      {busOneFxOneControls}
-      {busOneFxTwoControls}
-      {busTwoFxOneControls}
-      {busTwoFxTwoControls}
       <div className="mixer">
         {tracks.map((track, i) => {
           return (
@@ -211,15 +154,14 @@ function Mixer({ song }) {
           state={state}
           busOneActive={busOneActive}
           busOneChannel={busOneChannel.current}
-          handleSetBusOneFxOneChoice={handleSetBusOneFxOneChoice}
-          handleSetBusOneFxTwoChoice={handleSetBusOneFxTwoChoice}
+          busChoices={busChoices}
+          handleSetBusChoices={handleSetBusChoices}
         />
         <Bus2
           state={state}
           busTwoActive={busTwoActive}
           busTwoChannel={busTwoChannel.current}
-          handleSetBusTwoFxOneChoice={handleSetBusTwoFxOneChoice}
-          handleSetBusTwoFxTwoChoice={handleSetBusTwoFxTwoChoice}
+          handleSetBusChoices={handleSetBusChoices}
         />
         <MasterVol state={state} />
       </div>

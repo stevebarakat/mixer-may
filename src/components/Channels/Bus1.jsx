@@ -6,8 +6,8 @@ import useMeter from "../../hooks/useMeter";
 function Bus1({
   state,
   busOneChannel,
-  handleSetBusOneFxOneChoice,
-  handleSetBusOneFxTwoChoice,
+  busChoices,
+  handleSetBusChoices,
   busOneActive,
 }) {
   const [masterVol, setMasterVol] = useState(0);
@@ -24,39 +24,33 @@ function Bus1({
 
   const masterMeterVal = useMeter([busOneChannel]);
 
+  const arr = new Array(2).fill(null);
+  const options = arr.map((_, i) => {
+    return (
+      <div key={i} style={{ display: "flex", flexDirection: "column" }}>
+        <select
+          onChange={(e) => {
+            busChoices[i] = e.target.value;
+            handleSetBusChoices([...busChoices]);
+          }}
+          className="effect-select"
+          disabled={!busOneActiveBool}
+        >
+          <option value={`bs${i}-fx${i}`}>{`FX${i + 1}`}</option>
+          <option value="reverb">Reverb</option>
+          <option value="delay">Delay</option>
+          <option value="chorus">Chorus</option>
+          <option value="chebyshev">Chebyshev</option>
+          <option value="pitch-shift">PitchShift</option>
+          <option value="compressor">Compressor</option>
+        </select>
+      </div>
+    );
+  });
+
   return (
     <div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <select
-          onChange={(e) => handleSetBusOneFxOneChoice(e.target.value)}
-          className="effect-select"
-          disabled={!busOneActiveBool}
-        >
-          <option value="bs1-fx1">FX1</option>
-          <option value="reverb">Reverb</option>
-          <option value="delay">Delay</option>
-          <option value="chorus">Chorus</option>
-          <option value="chebyshev">Chebyshev</option>
-          <option value="pitch-shift">PitchShift</option>
-          <option value="compressor">Compressor</option>
-        </select>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <select
-          onChange={(e) => handleSetBusOneFxTwoChoice(e.target.value)}
-          className="effect-select"
-          disabled={!busOneActiveBool}
-        >
-          <option value="bs1-fx2">FX2</option>
-          <option value="reverb">Reverb</option>
-          <option value="delay">Delay</option>
-          <option value="chorus">Chorus</option>
-          <option value="chebyshev">Chebyshev</option>
-          <option value="pitch-shift">PitchShift</option>
-          <option value="compressor">Compressor</option>
-        </select>
-      </div>
-
+      {options}
       <div
         className="fader-wrap"
         style={{
