@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Mixer from "./components/Mixer";
 import { ninteenOne } from "./songs/1901";
 import { justDance } from "./songs/justDance";
+import { babyOneMoreTime } from "./songs/babyOneMoreTime";
 import { aDayInTheLife } from "./songs/aDayInTheLife";
 import { blackHoleSun } from "./songs/blackHoleSun";
 import { whenIComeAround } from "./songs/whenIComeAround";
@@ -9,6 +10,7 @@ import { creep } from "./songs/creep";
 import { dontLookBack } from "./songs/dontLookBack";
 import { lonleyHeart } from "./songs/lonleyHeart";
 import { blueMonday } from "./songs/blueMonday";
+import { teenageRiot } from "./songs/teenageRiot";
 import { borderline } from "./songs/borderline";
 import { roxanne } from "./songs/roxanne";
 import { rhiannon } from "./songs/rhiannon";
@@ -41,6 +43,12 @@ function App() {
         break;
       case "just-dance":
         setSong(justDance);
+        break;
+      case "teenage-riot":
+        setSong(teenageRiot);
+        break;
+      case "baby-one-more-time":
+        setSong(babyOneMoreTime);
         break;
       case "a-day-in-the-life":
         setSong(aDayInTheLife);
@@ -123,6 +131,10 @@ function App() {
             The Beatles - A Day In The Life
           </option>
           <option value="just-dance">Lady Gaga - Just Dance</option>
+          <option value="teenage-riot">Sonic Youth - Teenage Riot</option>
+          <option value="baby-one-more-time">
+            Britney Spears - Baby One More Time
+          </option>
         </select>
       </div>
     </>

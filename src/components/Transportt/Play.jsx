@@ -2,28 +2,27 @@ import { useState } from "react";
 import { start, Transport as t } from "tone";
 import { FaPlay, FaPause } from "react-icons/fa";
 
-function Play({ song }) {
-  const [state, setState] = useState(false);
+function Play({ state, handleSetState, song }) {
   const [ready, setReady] = useState(false);
 
   function initializeAudioContext() {
     start();
     t.position = song.start;
     t.start();
-    setState("started");
+    handleSetState("started");
     setReady(true);
   }
 
   function startSong() {
     if (state === "started") {
       t.pause();
-      setState("paused");
+      handleSetState("paused");
     } else if (state === "stopped") {
       t.start();
-      setState("started");
+      handleSetState("started");
     } else if (state === "paused") {
       t.start();
-      setState("started");
+      handleSetState("started");
     }
   }
 
