@@ -4,7 +4,6 @@ import {
   Player,
   EQ3,
   Channel,
-  Meter,
   Reverb,
   Chorus,
   Compressor,
@@ -34,9 +33,7 @@ function Mixer({ song }) {
   const players = useRef([]);
   const choices = useRef([]);
   const eqs = useRef([]);
-  const busOneMeter = useRef(null);
   const busOneChannel = useRef(null);
-  const busTwoMeter = useRef(null);
   const busTwoChannel = useRef(null);
   const [state, setState] = useState("stopped");
   const handleSetState = (value) => setState(value);
@@ -62,21 +59,8 @@ function Mixer({ song }) {
   const [busTwoFxOneControls, setBusTwoFxOneControls] = useState(null);
   const [busTwoFxTwoControls, setBusTwoFxTwoControls] = useState(null);
 
-  // make sure song stops at end
-  if (t.seconds > song.end) {
-    t.seconds = song.end;
-    t.stop();
-    setState("stopped");
-  }
-  // make sure song doesn't rewind past start position
-  if (t.seconds < 0) {
-    t.seconds = song.start;
-  }
   useEffect(() => {
     // create audio nodes
-    busOneMeter.current = new Meter();
-    busTwoMeter.current = new Meter();
-
     busOneChannel.current = new Channel().toDestination();
     busTwoChannel.current = new Volume().toDestination();
     busOneChannel.current.receive("busOne");
@@ -101,7 +85,6 @@ function Mixer({ song }) {
         player.disconnect();
         eqs.current[i].disconnect();
         channels.current[i].disconnect();
-        busOneMeter.current.disconnect();
       });
       players.current = [];
       eqs.current = [];
@@ -483,7 +466,6 @@ function Mixer({ song }) {
           busOneChannel={busOneChannel.current}
           handleSetBusOneFxOneChoice={handleSetBusOneFxOneChoice}
           handleSetBusOneFxTwoChoice={handleSetBusOneFxTwoChoice}
-          busOneMeter={busOneMeter.current}
         />
         <Bus2
           state={state}
@@ -491,7 +473,6 @@ function Mixer({ song }) {
           busTwoChannel={busTwoChannel.current}
           handleSetBusTwoFxOneChoice={handleSetBusTwoFxOneChoice}
           handleSetBusTwoFxTwoChoice={handleSetBusTwoFxTwoChoice}
-          busTwoMeter={busTwoMeter.current}
         />
         <MasterVol state={state} />
       </div>

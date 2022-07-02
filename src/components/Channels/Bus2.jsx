@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import VuMeter from "./VuMeter";
 import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
@@ -9,15 +9,9 @@ export default function Bus2({
   handleSetBusTwoFxOneChoice,
   handleSetBusTwoFxTwoChoice,
   busTwoActive,
-  busTwoMeter,
 }) {
-  const requestRef = useRef();
   const [masterVol, setMasterVol] = useState(0);
   const busTwoActiveBool = busTwoActive.some((bus) => bus === true);
-
-  if (busTwoChannel !== null) {
-    busTwoChannel.connect(busTwoMeter);
-  }
 
   function changeMasterVolume(e) {
     if (!busTwoActiveBool) return;

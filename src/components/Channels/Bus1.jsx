@@ -9,14 +9,9 @@ function Bus1({
   handleSetBusOneFxOneChoice,
   handleSetBusOneFxTwoChoice,
   busOneActive,
-  busOneMeter,
 }) {
   const [masterVol, setMasterVol] = useState(0);
   const busOneActiveBool = busOneActive.some((bus) => bus === true);
-
-  if (busOneChannel !== null) {
-    busOneChannel.connect(busOneMeter);
-  }
 
   function changeMasterVolume(e) {
     if (!busOneActiveBool) return;
