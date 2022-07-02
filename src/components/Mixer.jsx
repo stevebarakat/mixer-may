@@ -383,6 +383,7 @@ function Mixer({ song }) {
         if (e.target.checked) {
           busOneActive[id] = true;
           setBusOneActive([...busOneActive]);
+          channels.current[id].connect(Destination);
           channels.current[id].disconnect(Destination);
           channels.current[id].connect(busOneChannel.current);
         } else {
@@ -402,7 +403,8 @@ function Mixer({ song }) {
         if (e.target.checked) {
           busTwoActive[id] = true;
           setBusTwoActive(busTwoActive);
-          !busOneActive && channels.current[id].disconnect(Destination);
+          channels.current[id].connect(Destination);
+          channels.current[id].disconnect(Destination);
           channels.current[id].connect(busTwoChannel.current);
         } else {
           busTwoActive[id] = false;
