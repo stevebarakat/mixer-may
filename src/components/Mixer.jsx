@@ -30,20 +30,16 @@ import Chebyshever from "./FX/Chebyshev";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
-  const requestRef = useRef();
   const channels = useRef([]);
   const players = useRef([]);
   const choices = useRef([]);
   const eqs = useRef([]);
-  const meters = useRef([]);
-  const masterMeter = useRef(null);
   const busOneMeter = useRef(null);
   const busOneChannel = useRef(null);
   const busTwoMeter = useRef(null);
   const busTwoChannel = useRef(null);
   const [state, setState] = useState("stopped");
   const handleSetState = (value) => setState(value);
-  const [meterVals, setMeterVals] = useState(new Float32Array());
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [busOneFxOneType, setBusOneFxOneType] = useState(null);
@@ -78,7 +74,6 @@ function Mixer({ song }) {
   }
   useEffect(() => {
     // create audio nodes
-    masterMeter.current = new Meter();
     busOneMeter.current = new Meter();
     busTwoMeter.current = new Meter();
 
@@ -88,7 +83,6 @@ function Mixer({ song }) {
 
     for (let i = 0; i < tracks.length; i++) {
       eqs.current = [...eqs.current, new EQ3()];
-      meters.current = [...meters.current, new Meter()];
       channels.current = [
         ...channels.current,
         new Channel(tracks[i].volume, tracks[i].pan).connect(Destination),
@@ -98,24 +92,18 @@ function Mixer({ song }) {
 
     // connect everything
     players.current.forEach((player, i) =>
-      player
-        .chain(eqs.current[i], channels.current[i], meters.current[i])
-        .sync()
-        .start()
+      player.chain(eqs.current[i], channels.current[i]).sync().start()
     );
 
     return () => {
       t.stop();
       players.current.forEach((player, i) => {
         player.disconnect();
-        meters.current[i].disconnect();
         eqs.current[i].disconnect();
         channels.current[i].disconnect();
         busOneMeter.current.disconnect();
-        masterMeter.current.disconnect();
       });
       players.current = [];
-      meters.current = [];
       eqs.current = [];
       channels.current = [];
     };
@@ -124,22 +112,6 @@ function Mixer({ song }) {
   useEffect(() => {
     loaded().then(() => setIsLoaded(true));
   }, [setIsLoaded]);
-
-  // loop recursively to amimateMeters
-  const animateMeter = useCallback(() => {
-    meters.current.forEach((meter, i) => {
-      meterVals[i] = meter.getValue() + 85;
-      setMeterVals(() => [...meterVals]);
-    });
-    requestRef.current = requestAnimationFrame(animateMeter);
-  }, [meterVals]);
-
-  // triggers animateMeter
-  useEffect(() => {
-    requestAnimationFrame(animateMeter);
-    return () => cancelAnimationFrame(requestRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
 
   // when busOneFxOneChoice is selected it initiates new FX
   choices.current = [
@@ -428,7 +400,7 @@ function Mixer({ song }) {
         if (e.target.checked) {
           busOneActive[id] = true;
           setBusOneActive([...busOneActive]);
-          !busTwoActive && channels.current[id].disconnect(Destination);
+          channels.current[id].disconnect(Destination);
           channels.current[id].connect(busOneChannel.current);
         } else {
           busOneActive[id] = false;
@@ -495,7 +467,6 @@ function Mixer({ song }) {
             <ChannelStrip
               key={track.path}
               index={i}
-              meterVal={meterVals[i]}
               channel={channels.current[i]}
               eq={eqs.current[i]}
               track={track}
@@ -522,14 +493,7 @@ function Mixer({ song }) {
           handleSetBusTwoFxTwoChoice={handleSetBusTwoFxTwoChoice}
           busTwoMeter={busTwoMeter.current}
         />
-        <MasterVol
-          state={state}
-          masterMeter={masterMeter.current}
-          // masterBusChannel={masterBusChannel.current}
-        />
-        {/* <div className="multi-meter">
-          <MultiMeter state={state} />
-        </div> */}
+        <MasterVol state={state} />
       </div>
       <div className="controls-wrap">
         <div className="controls-well">

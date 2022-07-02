@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import VuMeter from "./VuMeter";
 import { dBToPercent } from "../../utils/scale";
+import useMeter from "../../hooks/useMeter";
 
 export default function Bus2({
   state,
@@ -11,7 +12,6 @@ export default function Bus2({
   busTwoMeter,
 }) {
   const requestRef = useRef();
-  const [masterMeterVal, setMasterMeterVal] = useState(-12);
   const [masterVol, setMasterVol] = useState(0);
   const busTwoActiveBool = busTwoActive.some((bus) => bus === true);
 
@@ -28,18 +28,7 @@ export default function Bus2({
     busTwoChannel.set({ volume: sv });
   }
 
-  const animateMeter = useCallback(() => {
-    setMasterMeterVal(busTwoMeter.getValue() + 85);
-    requestRef.current = requestAnimationFrame(animateMeter);
-  }, [busTwoMeter]);
-
-  useEffect(() => {
-    if (state !== "started")
-      setTimeout(() => cancelAnimationFrame(requestRef.current), 1000);
-    requestAnimationFrame(animateMeter);
-    return () => cancelAnimationFrame(requestRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  const masterMeterVal = useMeter([busTwoChannel]);
 
   return (
     <div>

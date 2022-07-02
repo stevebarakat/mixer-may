@@ -20,14 +20,14 @@ function Clock({ handleSetState, song }) {
   }
 
   const animateClock = useCallback(() => {
-    requestRef.current = requestAnimationFrame(animateClock);
     setClock(formatMilliseconds(t.seconds));
+    requestRef.current = requestAnimationFrame(animateClock);
   }, []);
 
   // triggers animateClock
   useEffect(() => {
     requestAnimationFrame(animateClock);
-    return () => cancelAnimationFrame(requestRef.current);
+    // return () => cancelAnimationFrame(requestRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

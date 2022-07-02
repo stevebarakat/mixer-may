@@ -3,6 +3,7 @@ import { Knob } from "react-rotary-knob";
 import skin from "../../utils/skin";
 import VuMeter from "./VuMeter";
 import { scale } from "../../utils/scale";
+import useMeter from "../../hooks/useMeter";
 
 function ChannelStrip({
   index,
@@ -10,7 +11,6 @@ function ChannelStrip({
   tracks,
   channel,
   eq,
-  meterVal,
   state,
   toggleBusOne,
   toggleBusTwo,
@@ -20,6 +20,7 @@ function ChannelStrip({
   const [highEqLevel, setHighEqLevel] = useState(track.highEqLevel);
   const [midEqLevel, setMidEqLevel] = useState(track.midEqLevel);
   const [lowEqLevel, setLowEqLevel] = useState(track.lowEqLevel);
+  const meterVal = useMeter([channel]);
 
   // THIS IS WHERE THE LOGARITHMIC SCALE IS SET
   function changeVolume(e) {
