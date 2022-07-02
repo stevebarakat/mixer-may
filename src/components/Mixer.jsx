@@ -427,12 +427,12 @@ function Mixer({ song }) {
       if (id === i) {
         if (e.target.checked) {
           busOneActive[id] = true;
-          setBusOneActive(busOneActive);
-          channels.current[id].disconnect(Destination);
+          setBusOneActive([...busOneActive]);
+          !busTwoActive && channels.current[id].disconnect(Destination);
           channels.current[id].connect(busOneChannel.current);
         } else {
           busOneActive[id] = false;
-          setBusOneActive(busOneActive);
+          setBusOneActive([...busOneActive]);
           channels.current[id].disconnect(busOneChannel.current);
           channels.current[id].connect(Destination);
         }
@@ -447,7 +447,7 @@ function Mixer({ song }) {
         if (e.target.checked) {
           busTwoActive[id] = true;
           setBusTwoActive(busTwoActive);
-          channels.current[id].disconnect(Destination);
+          !busOneActive && channels.current[id].disconnect(Destination);
           channels.current[id].connect(busTwoChannel.current);
         } else {
           busTwoActive[id] = false;
