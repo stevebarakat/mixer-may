@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import Mixer from "./components/Mixer";
 import Layout from "./components/Layout/Layout";
 import SongSelect from "./components/SongSelect";
-import { ninteenOne } from "./songs/1901";
+import { teenageRiot } from "./songs/teenageRiot";
 import "./components/styles.css";
 
 function App() {
   const [song, setSong] = useState(
-    () => JSON.parse(localStorage.getItem("song")) ?? ninteenOne
+    () => JSON.parse(localStorage.getItem("song")) ?? teenageRiot
   );
   const handleSetSong = (value) => setSong(value);
 

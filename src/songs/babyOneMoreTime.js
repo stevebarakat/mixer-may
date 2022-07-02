@@ -7,35 +7,35 @@ export const babyOneMoreTime = {
   location: "New York City, NY",
   bpm: 94,
   start: 0,
-  end: 248,
+  end: 214,
   tracks: [
     {
       name: "Drums",
-      path: "https://remixer-songs.s3.amazonaws.com/BritneySpears/02-BabyOneMoreTime-drums.mp3",
+      path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/babyOneMoreTime/02-BabyOneMoreTime-drums.mp3",
     },
     {
       name: "Bass",
-      path: "https://remixer-songs.s3.amazonaws.com/BritneySpears/01-BabyOneMoreTime-bass.mp3",
+      path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/babyOneMoreTime/01-BabyOneMoreTime-bass.mp3",
     },
     {
       name: "Guitar",
-      path: "https://remixer-songs.s3.amazonaws.com/BritneySpears/03-BabyOneMoreTime-guitar.mp3",
+      path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/babyOneMoreTime/03-BabyOneMoreTime-guitar.mp3",
     },
     {
       name: "Keys & FX",
-      path: "https://remixer-songs.s3.amazonaws.com/BritneySpears/04-BabyOneMoreTime-keys%2Bfx%2Bpad.mp3",
+      path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/babyOneMoreTime/04-BabyOneMoreTime-keys+fx+pad.mp3",
     },
     {
       name: "Piano",
-      path: "https://remixer-songs.s3.amazonaws.com/BritneySpears/06-BabyOneMoreTime-pianosample.mp3",
+      path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/babyOneMoreTime/06-BabyOneMoreTime-pianosample.mp3",
     },
     {
       name: "Lead Vox",
-      path: "https://remixer-songs.s3.amazonaws.com/BritneySpears/05-BabyOneMoreTime-leadvox.mp3",
+      path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/babyOneMoreTime/05-BabyOneMoreTime-leadvox.mp3",
     },
     {
       name: "Back Vox",
-      path: "https://remixer-songs.s3.amazonaws.com/BritneySpears/00-BabyOneMoreTime-backs.mp3",
+      path: "https://ioxpcmpvgermtfqxwykx.supabase.co/storage/v1/object/public/songs/babyOneMoreTime/00-BabyOneMoreTime-backs.mp3",
     },
   ],
 };

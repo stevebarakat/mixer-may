@@ -26,6 +26,7 @@ import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import Chebyshever from "./FX/Chebyshev";
+import useSetFxType from "../hooks/useSetFxType";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
@@ -39,20 +40,16 @@ function Mixer({ song }) {
   const handleSetState = (value) => setState(value);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [busOneFxOneType, setBusOneFxOneType] = useState(null);
   const [busOneFxOneChoice, setBusOneFxOneChoice] = useState(null);
   const handleSetBusOneFxOneChoice = (value) => setBusOneFxOneChoice(value);
-  const [busOneFxTwoType, setBusOneFxTwoType] = useState(null);
   const [busOneFxTwoChoice, setBusOneFxTwoChoice] = useState(null);
   const handleSetBusOneFxTwoChoice = (value) => setBusOneFxTwoChoice(value);
   const [busOneActive, setBusOneActive] = useState([]);
   const [busOneFxOneControls, setBusOneFxOneControls] = useState(null);
   const [busOneFxTwoControls, setBusOneFxTwoControls] = useState(null);
 
-  const [busTwoFxOneType, setBusTwoFxOneType] = useState(null);
   const [busTwoFxOneChoice, setBusTwoFxOneChoice] = useState(null);
   const handleSetBusTwoFxOneChoice = (value) => setBusTwoFxOneChoice(value);
-  const [busTwoFxTwoType, setBusTwoFxTwoType] = useState(null);
   const [busTwoFxTwoChoice, setBusTwoFxTwoChoice] = useState(null);
   const handleSetBusTwoFxTwoChoice = (value) => setBusTwoFxTwoChoice(value);
   const [busTwoActive, setBusTwoActive] = useState([]);
@@ -103,159 +100,9 @@ function Mixer({ song }) {
     busTwoFxOneChoice,
     busTwoFxTwoChoice,
   ];
-  useEffect(() => {
-    choices.current.forEach((choice, index) => {
-      const i = index + 1;
-      switch (choice) {
-        case "bs1-fx1":
-        case "bs1-fx2":
-          break;
-        case "reverb":
-          i === 1 && setBusOneFxOneType(new Reverb({ wet: 1 }).toDestination());
-          i === 2 && setBusOneFxTwoType(new Reverb({ wet: 1 }).toDestination());
-          i === 3 && setBusTwoFxOneType(new Reverb({ wet: 1 }).toDestination());
-          i === 4 && setBusTwoFxTwoType(new Reverb({ wet: 1 }).toDestination());
-          break;
-        case "delay":
-          i === 1 &&
-            setBusOneFxOneType(
-              new FeedbackDelay({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 2 &&
-            setBusOneFxTwoType(
-              new FeedbackDelay({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 3 &&
-            setBusTwoFxOneType(
-              new FeedbackDelay({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 4 &&
-            setBusTwoFxTwoType(
-              new FeedbackDelay({
-                wet: 1,
-              }).toDestination()
-            );
-          break;
-        case "chorus":
-          i === 1 &&
-            setBusOneFxOneType(
-              new Chorus({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 2 &&
-            setBusOneFxTwoType(
-              new Chorus({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 3 &&
-            setBusTwoFxOneType(
-              new Chorus({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 4 &&
-            setBusTwoFxTwoType(
-              new Chorus({
-                wet: 1,
-              }).toDestination()
-            );
-          break;
-        case "chebyshev":
-          i === 1 &&
-            setBusOneFxOneType(
-              new Chebyshev({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 2 &&
-            setBusOneFxTwoType(
-              new Chebyshev({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 3 &&
-            setBusTwoFxOneType(
-              new Chebyshev({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 4 &&
-            setBusTwoFxTwoType(
-              new Chebyshev({
-                wet: 1,
-              }).toDestination()
-            );
-          break;
-        case "pitch-shift":
-          i === 1 &&
-            setBusOneFxOneType(
-              new PitchShift({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 2 &&
-            setBusOneFxTwoType(
-              new PitchShift({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 3 &&
-            setBusTwoFxOneType(
-              new PitchShift({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 4 &&
-            setBusTwoFxTwoType(
-              new PitchShift({
-                wet: 1,
-              }).toDestination()
-            );
-          break;
-        case "compressor":
-          i === 1 &&
-            setBusOneFxOneType(
-              new Compressor({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 2 &&
-            setBusOneFxTwoType(
-              new Compressor({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 3 &&
-            setBusTwoFxOneType(
-              new Compressor({
-                wet: 1,
-              }).toDestination()
-            );
-          i === 4 &&
-            setBusTwoFxTwoType(
-              new Compressor({
-                wet: 1,
-              }).toDestination()
-            );
-          break;
-        default:
-          break;
-      }
-    });
-  }, [
-    busOneFxOneChoice,
-    busOneFxTwoChoice,
-    busTwoFxOneChoice,
-    busTwoFxTwoChoice,
-  ]);
+
+  const [busOneFxOneType, busOneFxTwoType, busTwoFxOneType, busTwoFxTwoType] =
+    useSetFxType(choices.current);
 
   useEffect(() => {
     choices.current.forEach((choice, index) => {

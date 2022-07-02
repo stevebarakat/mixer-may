@@ -14,14 +14,23 @@ function Header({ song }) {
           <span style={{ color: "var(--green)" }}>j</span>
           <span style={{ color: "var(--red)" }}>s</span>
         </p>
-        <p style={{ fontWeight: "bold" }}>version 0.0.0.0.1</p>
+        <p
+          style={{
+            fontWeight: "bold",
+            position: "relative",
+            top: "-12px",
+            right: "-8px",
+          }}
+        >
+          version 0.0.0.0.1
+        </p>
       </div>
       <div className="song-info">
         <p>Artist: {song.artist}</p>
-        <p>Song:{song.name}</p>
-        <p>Year:{song.year}</p>
-        <p>Studio:{song.studio}</p>
-        <p>Location:{song.location}</p>
+        <p>Song: {song.name}</p>
+        <p>Year: {song.year}</p>
+        <p>Studio: {song.studio}</p>
+        <p>Location: {song.location}</p>
       </div>
     </div>
   );
