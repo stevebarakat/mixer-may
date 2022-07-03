@@ -16,6 +16,7 @@ import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import useSetFxType from "../hooks/useSetFxType";
+import useChannelStrip from "../hooks/useChannelStrip";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
@@ -58,6 +59,8 @@ function Mixer({ song }) {
         player.disconnect();
         eqs.current[i].disconnect();
         channels.current[i].disconnect();
+        busOneChannel.current.disconnect();
+        busTwoChannel.current.disconnect();
       });
       players.current = [];
       eqs.current = [];
@@ -99,13 +102,13 @@ function Mixer({ song }) {
       if (id === i) {
         if (e.target.checked) {
           busTwoActive[id] = true;
-          // setBusTwoActive(busTwoActive);
+          setBusTwoActive(busTwoActive);
           channels.current[id].connect(Destination);
           channels.current[id].disconnect(Destination);
           channels.current[id].connect(busTwoChannel.current);
         } else {
           busTwoActive[id] = false;
-          // setBusTwoActive(busTwoActive);
+          setBusTwoActive(busTwoActive);
           channels.current[id].connect(busTwoChannel.current);
           channels.current[id].disconnect(busTwoChannel.current);
           channels.current[id].connect(Destination);
@@ -151,6 +154,7 @@ function Mixer({ song }) {
         <Bus2
           busTwoActive={busTwoActive}
           busTwoChannel={busTwoChannel.current}
+          busChoices={busChoices}
           handleSetBusChoices={handleSetBusChoices}
         />
         <MasterVol />
