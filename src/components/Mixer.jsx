@@ -16,6 +16,7 @@ import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import useSetFxType from "../hooks/useSetFxType";
+import useSetFxControls from "../hooks/useSetFxControls";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
@@ -71,14 +72,16 @@ function Mixer({ song }) {
 
   console.log("busChoices", busChoices);
 
-  const [fxTypes] = useSetFxType(busChoices);
+  const [fxTypes, fxControls] = useSetFxType(busChoices);
+
+  // const [fxControls] = useSetFxControls(busChoices, fxTypes);
 
   useEffect(() => {
     busChoices.forEach((choice, i) => {
-      if (choice === `bs${i + 1}-fx${i + 1}`) fxTypes[i].disconnect();
+      if (choice === `bs${i + 1}-fx${i + 1}`) fxTypes[i].dispose();
       if (fxTypes[i] === null || busOneChannel.current === null) return;
       busOneChannel.current.connect(fxTypes[i]);
-      return () => fxTypes[i].disconnect();
+      return () => fxTypes[i].dispose();
     });
   }, [fxTypes, busChoices]);
 
@@ -108,13 +111,14 @@ function Mixer({ song }) {
       if (id === i) {
         if (e.target.checked) {
           busTwoActive[id] = true;
-          setBusTwoActive(busTwoActive);
+          // setBusTwoActive(busTwoActive);
           channels.current[id].connect(Destination);
           channels.current[id].disconnect(Destination);
           channels.current[id].connect(busTwoChannel.current);
         } else {
           busTwoActive[id] = false;
-          setBusTwoActive(busTwoActive);
+          // setBusTwoActive(busTwoActive);
+          channels.current[id].connect(busTwoChannel.current);
           channels.current[id].disconnect(busTwoChannel.current);
           channels.current[id].connect(Destination);
         }
@@ -153,6 +157,9 @@ function Mixer({ song }) {
           busChoices={busChoices}
           handleSetBusChoices={handleSetBusChoices}
         />
+        {fxControls.map((control, i) => (
+          <div key={i}>{control}</div>
+        ))}
         <Bus2
           busTwoActive={busTwoActive}
           busTwoChannel={busTwoChannel.current}

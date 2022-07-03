@@ -23,8 +23,6 @@ export default function Reverber({ controls }) {
           max={10}
           step={0.001}
           onChange={(e) => {
-            // console.log(e.target.value);
-            // console.log("controls.decay", controls);
             controls.decay = parseFloat(e.target.value);
           }}
         />
