@@ -23,7 +23,7 @@ function Bus({
     busChannels[id].set({ volume: sv });
   }
 
-  const masterMeterVal = useMeter([busChannels]);
+  const masterMeterVal = useMeter([...busChannels]);
 
   const arr = new Array(2).fill(null);
   const options = arr.map((_, i) => {

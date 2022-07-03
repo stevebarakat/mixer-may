@@ -3,7 +3,7 @@ import { Destination, Volume } from "tone";
 import Controls from "./Transport/Controls";
 
 import MasterVol from "./Channels/MasterVol";
-import Bus from "./Channels/Bus";
+import Bus1 from "./Channels/Bus1";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import useSetFxType from "../hooks/useSetFxType";
@@ -11,30 +11,31 @@ import useChannelStrip from "../hooks/useChannelStrip";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
-  const busChannels = useRef(new Volume().toDestination());
+  const busOneChannel = useRef(new Volume().toDestination());
 
   const [busChoices, setBusChoices] = useState([]);
   const handleSetBusChoices = (value) => setBusChoices(value);
-  const [bussesActive, setBussesActive] = useState([]);
+  const [busOneActive, setBusOneActive] = useState([]);
 
   const [channels, eqs, isLoaded] = useChannelStrip({ tracks });
 
-  const [fxControls] = useSetFxType(busChoices, busChannels);
+  const [fxControls] = useSetFxType(busChoices, busOneChannel);
 
   function toggleBusOne(e) {
     const id = parseInt(e.target.id[0], 10);
     channels.current.forEach((channel, i) => {
       if (id === i) {
         if (e.target.checked) {
-          bussesActive[id] = true;
-          setBussesActive([...bussesActive]);
+          busOneActive[id] = true;
+          setBusOneActive([...busOneActive]);
           channels.current[id].connect(Destination);
           channels.current[id].disconnect(Destination);
-          channels.current[id].connect(busChannels.current);
+          channels.current[id].connect(busOneChannel.current);
         } else {
-          bussesActive[id] = false;
-          setBussesActive([...bussesActive]);
-          channels.current[id].disconnect(busChannels.current);
+          busOneActive[id] = false;
+          setBusOneActive([...busOneActive]);
+          channels.current[id].connect(busOneChannel.current);
+          channels.current[id].disconnect(busOneChannel.current);
           channels.current[id].connect(Destination);
         }
       }
@@ -68,9 +69,9 @@ function Mixer({ song }) {
             />
           );
         })}
-        <Bus
-          bussesActive={bussesActive}
-          busChannels={busChannels.current}
+        <Bus1
+          busOneActive={busOneActive}
+          busOneChannel={busOneChannel.current}
           busChoices={busChoices}
           handleSetBusChoices={handleSetBusChoices}
         />
