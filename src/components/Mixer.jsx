@@ -16,7 +16,6 @@ import Bus2 from "./Channels/Bus2";
 import ChannelStrip from "./Channels/ChannelStrips";
 import Loader from "./Loader";
 import useSetFxType from "../hooks/useSetFxType";
-import useSetFxControls from "../hooks/useSetFxControls";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
@@ -72,18 +71,7 @@ function Mixer({ song }) {
 
   console.log("busChoices", busChoices);
 
-  const [fxTypes, fxControls] = useSetFxType(busChoices);
-
-  // const [fxControls] = useSetFxControls(busChoices, fxTypes);
-
-  useEffect(() => {
-    busChoices.forEach((choice, i) => {
-      if (choice === `bs${i + 1}-fx${i + 1}`) fxTypes[i].dispose();
-      if (fxTypes[i] === null || busOneChannel.current === null) return;
-      busOneChannel.current.connect(fxTypes[i]);
-      return () => fxTypes[i].dispose();
-    });
-  }, [fxTypes, busChoices]);
+  const [fxControls] = useSetFxType(busChoices, busOneChannel);
 
   function toggleBusOne(e) {
     const id = parseInt(e.target.id[0], 10);
