@@ -4,7 +4,6 @@ import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
 
 export default function Bus2({
-  state,
   busTwoChannel,
   handleSetBusTwoFxOneChoice,
   handleSetBusTwoFxTwoChoice,

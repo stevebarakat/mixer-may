@@ -4,7 +4,6 @@ import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
 
 function Bus1({
-  state,
   busOneChannel,
   busChoices,
   handleSetBusChoices,

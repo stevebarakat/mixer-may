@@ -22,8 +22,6 @@ function Mixer({ song }) {
   const tracks = song.tracks;
   const busOneChannel = useRef(new Volume().toDestination());
   const busTwoChannel = useRef(new Volume().toDestination());
-  const [state, setState] = useState("stopped");
-  const handleSetState = (value) => setState(value);
 
   const [busChoices, setBusChoices] = useState([]);
   const handleSetBusChoices = (value) => setBusChoices(value);
@@ -119,7 +117,7 @@ function Mixer({ song }) {
       </div>
       <div className="controls-wrap">
         <div className="controls-well">
-          <Controls song={song} state={state} handleSetState={handleSetState} />
+          <Controls song={song} />
         </div>
       </div>
     </div>
