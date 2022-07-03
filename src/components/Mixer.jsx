@@ -20,59 +20,17 @@ import useChannelStrip from "../hooks/useChannelStrip";
 
 function Mixer({ song }) {
   const tracks = song.tracks;
-  const channels = useRef([]);
-  const players = useRef([]);
-  const eqs = useRef([]);
-  const busOneChannel = useRef(null);
-  const busTwoChannel = useRef(null);
+  const busOneChannel = useRef(new Volume().toDestination());
+  const busTwoChannel = useRef(new Volume().toDestination());
   const [state, setState] = useState("stopped");
   const handleSetState = (value) => setState(value);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const [busChoices, setBusChoices] = useState([]);
   const handleSetBusChoices = (value) => setBusChoices(value);
   const [busOneActive, setBusOneActive] = useState([]);
   const [busTwoActive, setBusTwoActive] = useState([]);
 
-  useEffect(() => {
-    // create audio nodes
-    busOneChannel.current = new Volume().toDestination();
-    busTwoChannel.current = new Volume().toDestination();
-
-    for (let i = 0; i < tracks.length; i++) {
-      eqs.current = [...eqs.current, new EQ3()];
-      channels.current = [
-        ...channels.current,
-        new Channel(tracks[i].volume, tracks[i].pan).connect(Destination),
-      ];
-      players.current = [...players.current, new Player(tracks[i].path)];
-    }
-
-    // connect everything
-    players.current.forEach((player, i) =>
-      player.chain(eqs.current[i], channels.current[i]).sync().start()
-    );
-
-    return () => {
-      t.stop();
-      players.current.forEach((player, i) => {
-        player.disconnect();
-        eqs.current[i].disconnect();
-        channels.current[i].disconnect();
-        busOneChannel.current.disconnect();
-        busTwoChannel.current.disconnect();
-      });
-      players.current = [];
-      eqs.current = [];
-      channels.current = [];
-    };
-  }, [tracks]);
-
-  useEffect(() => {
-    loaded().then(() => setIsLoaded(true));
-  }, [setIsLoaded]);
-
-  console.log("busChoices", busChoices);
+  const [channels, eqs, isLoaded] = useChannelStrip({ tracks });
 
   const [fxControls] = useSetFxType(busChoices, busOneChannel);
 

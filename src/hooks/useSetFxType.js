@@ -16,7 +16,7 @@ import Chebyshever from "../components/FX/Chebyshev";
 
 export default function useSetFxType(choices, busOneChannel) {
   const [fxTypes] = useState([]);
-  const [fxControls, setFxControls] = useState([]);
+  const [fxControls] = useState([]);
 
   choices.forEach((choice, i) => {
     fxTypes[i] && fxTypes[i].disconnect();
@@ -68,5 +68,6 @@ export default function useSetFxType(choices, busOneChannel) {
       return () => fxTypes[i].dispose();
     });
   }, [fxTypes, choices]);
+
   return [fxControls];
 }
