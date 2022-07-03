@@ -21,7 +21,6 @@ function Mixer({ song }) {
   const tracks = song.tracks;
   const channels = useRef([]);
   const players = useRef([]);
-  const choices = useRef([]);
   const eqs = useRef([]);
   const busOneChannel = useRef(null);
   const busTwoChannel = useRef(null);
@@ -72,17 +71,16 @@ function Mixer({ song }) {
 
   console.log("busChoices", busChoices);
 
-  const [busOneFxOneType, busOneFxTwoType, busTwoFxOneType, busTwoFxTwoType] =
-    useSetFxType(busChoices);
+  const [fxTypes] = useSetFxType(busChoices);
 
   useEffect(() => {
     busChoices.forEach((choice, i) => {
-      if (choice === `bs${i}-fx${i}`) busOneFxOneType.disconnect();
-      if (busOneFxOneType === null || busOneChannel.current === null) return;
-      busOneChannel.current.connect(busOneFxOneType);
-      return () => busOneFxOneType.disconnect();
+      if (choice === `bs${i + 1}-fx${i + 1}`) fxTypes[i].disconnect();
+      if (fxTypes[i] === null || busOneChannel.current === null) return;
+      busOneChannel.current.connect(fxTypes[i]);
+      return () => fxTypes[i].disconnect();
     });
-  }, [busOneFxOneType, busChoices]);
+  }, [fxTypes, busChoices]);
 
   function toggleBusOne(e) {
     const id = parseInt(e.target.id[0], 10);

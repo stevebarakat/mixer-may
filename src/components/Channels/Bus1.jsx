@@ -36,7 +36,7 @@ function Bus1({
           className="effect-select"
           disabled={!busOneActiveBool}
         >
-          <option value={`bs${i}-fx${i}`}>{`FX${i + 1}`}</option>
+          <option value={`bs${i + 1}-fx${i + 1}`}>{`FX${i + 1}`}</option>
           <option value="reverb">Reverb</option>
           <option value="delay">Delay</option>
           <option value="chorus">Chorus</option>
@@ -58,7 +58,7 @@ function Bus1({
           margin: "0 0 0 16px",
         }}
       >
-        <div className="window js-window">
+        <div className="window">
           <input
             disabled
             type="text"
