@@ -11,7 +11,6 @@ function ChannelStrip({
   tracks,
   channel,
   eq,
-  state,
   toggleBusOne,
   toggleBusTwo,
 }) {

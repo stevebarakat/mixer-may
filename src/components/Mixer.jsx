@@ -142,26 +142,23 @@ function Mixer({ song }) {
               eq={eqs.current[i]}
               track={track}
               tracks={tracks}
-              state={state}
               toggleBusOne={toggleBusOne}
               toggleBusTwo={toggleBusTwo}
             />
           );
         })}
         <Bus1
-          state={state}
           busOneActive={busOneActive}
           busOneChannel={busOneChannel.current}
           busChoices={busChoices}
           handleSetBusChoices={handleSetBusChoices}
         />
         <Bus2
-          state={state}
           busTwoActive={busTwoActive}
           busTwoChannel={busTwoChannel.current}
           handleSetBusChoices={handleSetBusChoices}
         />
-        <MasterVol state={state} />
+        <MasterVol />
       </div>
       <div className="controls-wrap">
         <div className="controls-well">

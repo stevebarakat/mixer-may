@@ -58,7 +58,7 @@ function Bus1({
           margin: "0 0 0 16px",
         }}
       >
-        <div className="window">
+        <div className="window js-window">
           <input
             disabled
             type="text"
