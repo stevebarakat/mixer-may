@@ -124,6 +124,9 @@ function Mixer({ song }) {
     </div>
   ) : (
     <div className="console">
+      {fxControls.map((control, i) => (
+        <div key={i}>{control}</div>
+      ))}
       <div className="mixer">
         {tracks.map((track, i) => {
           return (
@@ -145,9 +148,6 @@ function Mixer({ song }) {
           busChoices={busChoices}
           handleSetBusChoices={handleSetBusChoices}
         />
-        {fxControls.map((control, i) => (
-          <div key={i}>{control}</div>
-        ))}
         <Bus2
           busTwoActive={busTwoActive}
           busTwoChannel={busTwoChannel.current}
