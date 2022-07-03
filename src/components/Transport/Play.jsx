@@ -3,7 +3,7 @@ import { start, Transport as t } from "tone";
 import { FaPlay, FaPause } from "react-icons/fa";
 
 function Play({ song }) {
-  const [state, setState] = useState(false);
+  const [state, setState] = useState("stopped");
   const [ready, setReady] = useState(false);
 
   function initializeAudioContext() {

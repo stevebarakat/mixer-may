@@ -4,7 +4,7 @@ import VuMeter from "./VuMeter";
 import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
 
-function MasterVol({ state, masterBusChannel }) {
+function MasterVol({ masterBusChannel }) {
   const [masterVol, setMasterVol] = useState(0);
 
   function changeMasterVolume(e) {

@@ -3,7 +3,7 @@ import { Destination, Analyser } from "tone";
 import { GainToAudio } from "tone";
 import VuMeter from "./VuMeter";
 
-function MultiMeter({ state }) {
+function MultiMeter() {
   const [masterMeterVal, setMasterMeterVal] = useState(new Float32Array());
   const analyser = useRef();
   const requestRef = useRef();
@@ -24,11 +24,10 @@ function MultiMeter({ state }) {
   }, [analyser]);
 
   useEffect(() => {
-    if (state !== "started") return;
     requestAnimationFrame(animateMeter);
     return () => cancelAnimationFrame(requestRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state]);
+  }, []);
 
   let float32 = [];
   masterMeterVal.map((val) => {
