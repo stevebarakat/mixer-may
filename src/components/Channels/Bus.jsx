@@ -3,7 +3,13 @@ import VuMeter from "./VuMeter";
 import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
 
-function Bus({ busChannel, busChoices, handleSetBusChoices, busOneActive }) {
+function Bus({
+  index,
+  busChannel,
+  busChoices,
+  handleSetBusChoices,
+  busOneActive,
+}) {
   const [masterVol, setMasterVol] = useState(0);
   const busOneActiveBool = busOneActive.some((bus) => bus === true);
 
@@ -76,7 +82,7 @@ function Bus({ busChannel, busChoices, handleSetBusChoices, busOneActive }) {
           />
         </div>
         <div className="track-labels">
-          <span className="track-name">Bus 1</span>
+          <span className="track-name">Bus {index + 1}</span>
         </div>
       </div>
     </div>

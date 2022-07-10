@@ -76,6 +76,7 @@ function Mixer({ song }) {
         })}
         {busChannels.current.map((busChannel, i) => (
           <Bus
+            index={i}
             key={`busChannel${i}`}
             busOneActive={busOneActive}
             busChannel={busChannel}
