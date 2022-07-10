@@ -9,16 +9,14 @@ function App() {
   const [song, setSong] = useState(
     () => JSON.parse(localStorage.getItem("song")) ?? teenageRiot
   );
-  const handleSetSong = (value) => setSong(value);
+  const handleSetSong = (value) => {
+    setSong(value);
+    localStorage.setItem("song", JSON.stringify(value));
+  };
 
-  useEffect(() => {
-    localStorage.setItem("song", JSON.stringify(song));
-    try {
-      JSON.parse(localStorage.getItem("song"));
-    } catch {
-      console.error("The song could not be parsed into JSON.");
-    }
-  }, [song]);
+  // useEffect(() => {
+  //   localStorage.setItem("song", JSON.stringify(song));
+  // }, [song]);
 
   return (
     <Layout song={song}>

@@ -1,37 +1,30 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import VuMeter from "./VuMeter";
 import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
 
-function Bus({
-  index,
-  busChannels,
-  busChoices,
-  handleSetBusChoices,
-  bussesActive,
-}) {
+function Bus({ busChannel, busChoices, handleSetBusChoices, busOneActive }) {
   const [masterVol, setMasterVol] = useState(0);
-  const busOneActiveBool = bussesActive.some((bus) => bus === true);
+  const busOneActiveBool = busOneActive.some((bus) => bus === true);
 
   function changeMasterVolume(e) {
     if (!busOneActiveBool) return;
-    const id = e.target.id;
     const value = parseInt(e.target.value, 10);
     const v = Math.log(value + 101) / Math.log(113);
     const sv = dBToPercent(v);
     setMasterVol(Math.round(sv));
-    busChannels[id].set({ volume: sv });
+    busChannel.set({ volume: sv });
   }
 
-  const masterMeterVal = useMeter([...busChannels]);
+  const masterMeterVal = useMeter([busChannel]);
 
   const arr = new Array(2).fill(null);
   const options = arr.map((_, i) => {
     return (
       <div key={i} style={{ display: "flex", flexDirection: "column" }}>
         <select
-          id={i}
           onChange={(e) => {
+            console.log(busChoices[i]);
             busChoices[i] = e.target.value;
             handleSetBusChoices([...busChoices]);
           }}
@@ -83,7 +76,7 @@ function Bus({
           />
         </div>
         <div className="track-labels">
-          <span className="track-name">Bus {index}</span>
+          <span className="track-name">Bus 1</span>
         </div>
       </div>
     </div>

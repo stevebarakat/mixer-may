@@ -157,6 +157,7 @@ function ChannelStrip({
       <div className="solo-mute">
         <input
           id={`${index}busOne${track.path}`}
+          name={0}
           type="checkbox"
           onChange={toggleBusOne}
         />
@@ -165,6 +166,7 @@ function ChannelStrip({
         </label>
         <input
           id={`${index}busTwo${track.path}`}
+          name={1}
           type="checkbox"
           onChange={toggleBusTwo}
         />

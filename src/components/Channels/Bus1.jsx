@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState } from "react";
 import VuMeter from "./VuMeter";
 import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
