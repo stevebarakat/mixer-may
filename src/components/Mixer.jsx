@@ -18,27 +18,27 @@ function Mixer({ song }) {
 
   const [busChoices, setBusChoices] = useState([]);
   const handleSetBusChoices = (value) => setBusChoices(value);
-  const [busOneActive, setBusOneActive] = useState([]);
+  const [activeBusses, setActiveBusses] = useState([[], []]);
 
   const [channels, eqs, isLoaded] = useChannelStrip({ tracks });
 
   const [fxControls] = useSetFxType(busChoices, busChannels);
 
-  function toggleBusOne(e) {
+  function toggleBus(e, index) {
     const id = parseInt(e.target.id[0], 10);
     const name = e.target.name;
     channels.current.forEach((channel, i) => {
       if (id === i) {
         console.log("name", busChannels.current[name]);
         if (e.target.checked) {
-          busOneActive[id] = true;
-          setBusOneActive([...busOneActive]);
+          activeBusses[i][id] = true;
+          setActiveBusses([...activeBusses]);
           channels.current[id].connect(Destination);
           channels.current[id].disconnect(Destination);
           channels.current[id].connect(busChannels.current[name]);
         } else {
-          busOneActive[id] = false;
-          setBusOneActive([...busOneActive]);
+          activeBusses[i][id] = false;
+          setActiveBusses([...activeBusses]);
           channels.current[id].connect(busChannels.current[name]);
           channels.current[id].disconnect(busChannels.current[name]);
           channels.current[id].connect(Destination);
@@ -70,7 +70,8 @@ function Mixer({ song }) {
               eq={eqs.current[i]}
               track={track}
               tracks={tracks}
-              toggleBusOne={toggleBusOne}
+              toggleBus={toggleBus}
+              busChannels={busChannels.current}
             />
           );
         })}
@@ -78,7 +79,7 @@ function Mixer({ song }) {
           <Bus
             index={i}
             key={`busChannel${i}`}
-            busOneActive={busOneActive}
+            activeBusses={activeBusses[i]}
             busChannel={busChannel}
             busChoices={busChoices}
             handleSetBusChoices={handleSetBusChoices}

@@ -8,10 +8,10 @@ function Bus({
   busChannel,
   busChoices,
   handleSetBusChoices,
-  busOneActive,
+  activeBusses,
 }) {
   const [masterVol, setMasterVol] = useState(0);
-  const busOneActiveBool = busOneActive.some((bus) => bus === true);
+  const busOneActiveBool = activeBusses.some((bus) => bus === true);
 
   function changeMasterVolume(e) {
     if (!busOneActiveBool) return;

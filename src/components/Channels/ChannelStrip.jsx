@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Knob } from "react-rotary-knob";
 import skin from "../../utils/skin";
 import VuMeter from "./VuMeter";
@@ -11,8 +11,8 @@ function ChannelStrip({
   tracks,
   channel,
   eq,
-  toggleBusOne,
-  toggleBusTwo,
+  toggleBus,
+  busChannels,
 }) {
   const [isMuted, setIsMuted] = useState(track.mute);
   const [volume, setVolume] = useState(0);
@@ -155,24 +155,20 @@ function ChannelStrip({
         </label>
       </div>
       <div className="solo-mute">
-        <input
-          id={`${index}busOne${track.path}`}
-          name={0}
-          type="checkbox"
-          onChange={toggleBusOne}
-        />
-        <label className="label" htmlFor={`${index}busOne${track.path}`}>
-          1
-        </label>
-        <input
-          id={`${index}busTwo${track.path}`}
-          name={1}
-          type="checkbox"
-          onChange={toggleBusTwo}
-        />
-        <label className="label" htmlFor={`${index}busTwo${track.path}`}>
-          2
-        </label>
+        {busChannels.map((_, i) => (
+          <Fragment key={i}>
+            <input
+              key={i}
+              id={`${i}busOne${track.path}`}
+              name={0}
+              type="checkbox"
+              onChange={(e) => toggleBus(e, (index = i))}
+            />
+            <label className="label" htmlFor={`${i}busOne${track.path}`}>
+              {i + 1}
+            </label>
+          </Fragment>
+        ))}
       </div>
 
       <div className="fader-wrap">
