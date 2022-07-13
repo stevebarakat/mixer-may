@@ -16,7 +16,7 @@ function Mixer({ song }) {
     new Volume().toDestination(),
   ]);
 
-  const [busChoices, setBusChoices] = useState([]);
+  const [busChoices, setBusChoices] = useState([[], []]);
   const handleSetBusChoices = (value) => setBusChoices(value);
   const [activeBusses, setActiveBusses] = useState([[], []]);
 
@@ -25,22 +25,24 @@ function Mixer({ song }) {
   const [fxControls] = useSetFxType(busChoices, busChannels);
 
   function toggleBus(e) {
-    console.log("e.target.name", e.target.name);
     const id = parseInt(e.target.id[3], 10);
     channels.current.forEach((channel, i) => {
       if (id === i) {
         if (e.target.checked) {
           activeBusses[i][id] = true;
           setActiveBusses([...activeBusses]);
+          channels.current[e.target.name].connect(Destination);
+          channels.current[e.target.name].disconnect(Destination);
           channels.current[e.target.name].connect(busChannels.current[i]);
         } else {
           activeBusses[i][id] = false;
           setActiveBusses([...activeBusses]);
+          channels.current[e.target.name].connect(busChannels.current[i]);
+          channels.current[e.target.name].disconnect(busChannels.current[i]);
           channels.current[e.target.name].connect(Destination);
         }
       }
     });
-    console.log("activeBusses", activeBusses);
   }
 
   // wait for the buffers to load
