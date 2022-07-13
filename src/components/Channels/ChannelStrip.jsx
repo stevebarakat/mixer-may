@@ -159,12 +159,12 @@ function ChannelStrip({
           <Fragment key={i}>
             <input
               key={i}
-              id={`${i}busOne${track.path}`}
-              name={0}
+              id={`bus${i + track.path}`}
+              name={index}
               type="checkbox"
-              onChange={(e) => toggleBus(e, (index = i))}
+              onChange={toggleBus}
             />
-            <label className="label" htmlFor={`${i}busOne${track.path}`}>
+            <label className="label" htmlFor={`bus${i + track.path}`}>
               {i + 1}
             </label>
           </Fragment>

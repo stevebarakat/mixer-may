@@ -24,27 +24,23 @@ function Mixer({ song }) {
 
   const [fxControls] = useSetFxType(busChoices, busChannels);
 
-  function toggleBus(e, index) {
-    const id = parseInt(e.target.id[0], 10);
-    const name = e.target.name;
+  function toggleBus(e) {
+    console.log("e.target.name", e.target.name);
+    const id = parseInt(e.target.id[3], 10);
     channels.current.forEach((channel, i) => {
       if (id === i) {
-        console.log("name", busChannels.current[name]);
         if (e.target.checked) {
           activeBusses[i][id] = true;
           setActiveBusses([...activeBusses]);
-          channels.current[id].connect(Destination);
-          channels.current[id].disconnect(Destination);
-          channels.current[id].connect(busChannels.current[name]);
+          channels.current[e.target.name].connect(busChannels.current[i]);
         } else {
           activeBusses[i][id] = false;
           setActiveBusses([...activeBusses]);
-          channels.current[id].connect(busChannels.current[name]);
-          channels.current[id].disconnect(busChannels.current[name]);
-          channels.current[id].connect(Destination);
+          channels.current[e.target.name].connect(Destination);
         }
       }
     });
+    console.log("activeBusses", activeBusses);
   }
 
   // wait for the buffers to load
