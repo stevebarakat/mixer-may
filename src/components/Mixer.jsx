@@ -16,13 +16,13 @@ function Mixer({ song }) {
     new Volume().toDestination(),
   ]);
 
-  const [busChoices, setBusChoices] = useState([[], []]);
-  const handleSetBusChoices = (value) => setBusChoices(value);
+  const [fxChoices, setFxChoices] = useState([]);
+  const handleSetFxChoices = (value) => setFxChoices(value);
   const [activeBusses, setActiveBusses] = useState([[], []]);
 
   const [channels, eqs, isLoaded] = useChannelStrip({ tracks });
 
-  const [fxControls] = useSetFxType(busChoices, busChannels);
+  const [fxControls] = useSetFxType(fxChoices, busChannels);
 
   function toggleBus(e) {
     const id = parseInt(e.target.id[3], 10);
@@ -37,8 +37,8 @@ function Mixer({ song }) {
         } else {
           activeBusses[i][id] = false;
           setActiveBusses([...activeBusses]);
-          channels.current[e.target.name].connect(busChannels.current[i]);
-          channels.current[e.target.name].disconnect(busChannels.current[i]);
+          // channels.current[e.target.name].connect(busChannels.current[i]);
+          // channels.current[e.target.name].disconnect(busChannels.current[i]);
           channels.current[e.target.name].connect(Destination);
         }
       }
@@ -79,8 +79,8 @@ function Mixer({ song }) {
             key={`busChannel${i}`}
             activeBusses={activeBusses[i]}
             busChannel={busChannel}
-            busChoices={busChoices}
-            handleSetBusChoices={handleSetBusChoices}
+            fxChoices={fxChoices}
+            handleSetFxChoices={handleSetFxChoices}
           />
         ))}
         <MasterVol />

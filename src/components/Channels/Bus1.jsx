@@ -3,12 +3,7 @@ import VuMeter from "./VuMeter";
 import { dBToPercent } from "../../utils/scale";
 import useMeter from "../../hooks/useMeter";
 
-function Bus1({
-  busOneChannel,
-  busChoices,
-  handleSetBusChoices,
-  busOneActive,
-}) {
+function Bus1({ busOneChannel, fxChoices, handleSetFxChoices, busOneActive }) {
   const [masterVol, setMasterVol] = useState(0);
   const busOneActiveBool = busOneActive.some((bus) => bus === true);
 
@@ -29,8 +24,8 @@ function Bus1({
       <div key={i} style={{ display: "flex", flexDirection: "column" }}>
         <select
           onChange={(e) => {
-            busChoices[i] = e.target.value;
-            handleSetBusChoices([...busChoices]);
+            fxChoices[i] = e.target.value;
+            handleSetFxChoices([...fxChoices]);
           }}
           className="effect-select"
           disabled={!busOneActiveBool}

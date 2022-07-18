@@ -6,8 +6,8 @@ import useMeter from "../../hooks/useMeter";
 function Bus({
   index,
   busChannel,
-  busChoices,
-  handleSetBusChoices,
+  fxChoices,
+  handleSetFxChoices,
   activeBusses,
 }) {
   const [masterVol, setMasterVol] = useState(0);
@@ -30,9 +30,9 @@ function Bus({
       <div key={i} style={{ display: "flex", flexDirection: "column" }}>
         <select
           onChange={(e) => {
-            console.log(busChoices[i]);
-            busChoices[i] = e.target.value;
-            handleSetBusChoices([...busChoices]);
+            fxChoices[i] = e.target.value;
+            handleSetFxChoices([...fxChoices]);
+            console.log(fxChoices[i]);
           }}
           className="effect-select"
           disabled={!busOneActiveBool}

@@ -14,11 +14,11 @@ import PitchShifter from "../components/FX/PitchShift";
 import Compress from "../components/FX/Compressor";
 import Chebyshever from "../components/FX/Chebyshev";
 
-export default function useSetFxType(busChoices, busChannels) {
+export default function useSetFxType(fxChoices, busChannels) {
   const [fxTypes] = useState([]);
   const [fxControls] = useState([]);
 
-  busChoices.forEach((choice, i) => {
+  fxChoices.forEach((choice, i) => {
     fxTypes[i] && fxTypes[i].disconnect();
     switch (choice) {
       case `bs${i + 1}-fx${i + 1}`:
@@ -60,14 +60,15 @@ export default function useSetFxType(busChoices, busChannels) {
         break;
     }
   });
+
   useEffect(() => {
-    busChoices.forEach((choice, i) => {
+    fxChoices.forEach((choice, i) => {
       if (choice === `bs${i + 1}-fx${i + 1}`) fxTypes[i].dispose();
       if (fxTypes[i] === null) return;
       busChannels.current[0].connect(fxTypes[i]);
       return () => fxTypes[i].dispose();
     });
-  }, [fxTypes, busChoices, busChannels]);
+  }, [fxTypes, fxChoices, busChannels]);
 
   return [fxControls];
 }
