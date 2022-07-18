@@ -22,36 +22,41 @@ function Bus({
     busChannel.set({ volume: sv });
   }
 
-  const masterMeterVal = useMeter([busChannel]);
+  // const masterMeterVal = useMeter([busChannel]);
 
   const arr = new Array(2).fill(null);
-  const options = arr.map((_, i) => {
-    return (
-      <div key={i} style={{ display: "flex", flexDirection: "column" }}>
-        <select
-          onChange={(e) => {
-            fxChoices[i] = e.target.value;
-            handleSetFxChoices([...fxChoices]);
-            console.log(fxChoices[i]);
-          }}
-          className="effect-select"
-          disabled={!busOneActiveBool}
-        >
-          <option value={`bs${i + 1}-fx${i + 1}`}>{`FX${i + 1}`}</option>
-          <option value="reverb">Reverb</option>
-          <option value="delay">Delay</option>
-          <option value="chorus">Chorus</option>
-          <option value="chebyshev">Chebyshev</option>
-          <option value="pitch-shift">PitchShift</option>
-          <option value="compressor">Compressor</option>
-        </select>
-      </div>
-    );
-  });
+  const onChange = (e, j, i) => {
+    handleSetFxChoices((currentFxChoices) => {
+      const temp = currentFxChoices.map((each) => [...each]);
+      temp[j][i] = e.target.value;
+      return temp;
+    });
+  };
+
+  const options = (j) =>
+    arr.map((_, i) => {
+      return (
+        <div key={i} style={{ display: "flex", flexDirection: "column" }}>
+          <select
+            onChange={(e) => onChange(e, j, i)}
+            className="effect-select"
+            disabled={!busOneActiveBool}
+          >
+            <option value={`bs${i + 1}-fx${i + 1}`}>{`FX${i + 1}`}</option>
+            <option value="reverb">Reverb</option>
+            <option value="delay">Delay</option>
+            <option value="chorus">Chorus</option>
+            <option value="chebyshev">Chebyshev</option>
+            <option value="pitch-shift">PitchShift</option>
+            <option value="compressor">Compressor</option>
+          </select>
+        </div>
+      );
+    });
 
   return (
     <div>
-      {options}
+      {options(index)}
       <div
         className="fader-wrap"
         style={{
@@ -68,7 +73,7 @@ function Bus({
           />
         </div>
         <div className="levels-wrap">
-          <VuMeter meterValue={masterMeterVal} height={450} width={12.5} />
+          <VuMeter meterValue={0} height={450} width={12.5} />
         </div>
         <div className="master-vol-wrap">
           <input

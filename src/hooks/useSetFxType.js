@@ -18,54 +18,60 @@ export default function useSetFxType(fxChoices, busChannels) {
   const [fxTypes] = useState([]);
   const [fxControls] = useState([]);
 
-  fxChoices.forEach((choice, i) => {
-    fxTypes[i] && fxTypes[i].disconnect();
-    switch (choice) {
-      case `bs${i + 1}-fx${i + 1}`:
-        fxControls[i] = null;
-        break;
-      case "reverb":
-        fxTypes[i] = new Reverb({ decay: 2, delayTime: 2 }).toDestination();
-        fxControls[i] = <Reverber controls={fxTypes[i]} />;
-        break;
-      case "delay":
-        fxTypes[i] = new FeedbackDelay({
-          delayTime: 2,
-          feedback: 1,
-          wet: 1,
-        }).toDestination();
-        fxControls[i] = <Delay controls={fxTypes[i]} />;
-        break;
-      case "chorus":
-        fxTypes[i] = new Chorus().toDestination();
-        fxControls[i] = <Choruser controls={fxTypes[i]} />;
-        break;
-      case "chebyshev":
-        fxTypes[i] = new Chebyshev({ order: 78 }).toDestination();
-        fxControls[i] = <Chebyshever controls={fxTypes[i]} />;
-        break;
-      case "pitch-shift":
-        fxTypes[i] = new PitchShift({
-          pitch: 25,
-          depth: 1,
-          delayTime: 1,
-        }).toDestination();
-        fxControls[i] = <PitchShifter controls={fxTypes[i]} />;
-        break;
-      case "compressor":
-        fxTypes[i] = new Compressor().toDestination();
-        fxControls[i] = <Compress controls={fxTypes[i]} />;
-        break;
-      default:
-        break;
-    }
+  fxChoices.forEach((fxChoice) => {
+    fxChoice.forEach((choice, i) => {
+      fxTypes[i] && fxTypes[i].disconnect();
+      switch (choice) {
+        case `bs${i + 1}-fx${i + 1}`:
+          fxControls[i] = null;
+          break;
+        case "reverb":
+          fxTypes[i] = new Reverb({ decay: 2, delayTime: 2 }).toDestination();
+          fxControls[i] = <Reverber controls={fxTypes[i]} />;
+          break;
+        case "delay":
+          fxTypes[i] = new FeedbackDelay({
+            delayTime: 2,
+            feedback: 1,
+            wet: 1,
+          }).toDestination();
+          fxControls[i] = <Delay controls={fxTypes[i]} />;
+          break;
+        case "chorus":
+          fxTypes[i] = new Chorus().toDestination();
+          fxControls[i] = <Choruser controls={fxTypes[i]} />;
+          break;
+        case "chebyshev":
+          fxTypes[i] = new Chebyshev({ order: 78 }).toDestination();
+          fxControls[i] = <Chebyshever controls={fxTypes[i]} />;
+          break;
+        case "pitch-shift":
+          fxTypes[i] = new PitchShift({
+            pitch: 25,
+            depth: 1,
+            delayTime: 1,
+          }).toDestination();
+          fxControls[i] = <PitchShifter controls={fxTypes[i]} />;
+          break;
+        case "compressor":
+          fxTypes[i] = new Compressor().toDestination();
+          fxControls[i] = <Compress controls={fxTypes[i]} />;
+          break;
+        default:
+          break;
+      }
+    });
   });
 
   useEffect(() => {
-    fxChoices.forEach((choice, i) => {
-      if (choice === `bs${i + 1}-fx${i + 1}`) fxTypes[i].dispose();
-      if (fxTypes[i] === null) return;
-      busChannels.current[0].connect(fxTypes[i]);
+    console.log("fxChoices", fxChoices);
+    fxChoices.forEach((choices, i) => {
+      console.log("choices", choices);
+      choices.forEach((choice, i) => {
+        if (choice === `bs${i + 1}-fx${i + 1}`) fxTypes[i].dispose();
+        if (fxTypes[i] === null) return;
+        busChannels.current[i].connect(fxTypes[i]);
+      });
       return () => fxTypes[i].dispose();
     });
   }, [fxTypes, fxChoices, busChannels]);

@@ -16,7 +16,7 @@ function Mixer({ song }) {
     new Volume().toDestination(),
   ]);
 
-  const [fxChoices, setFxChoices] = useState(["reverb", "delay"]);
+  const [fxChoices, setFxChoices] = useState([[], []]);
   const handleSetFxChoices = (value) => setFxChoices(value);
   const [activeBusses, setActiveBusses] = useState([[], []]);
 
