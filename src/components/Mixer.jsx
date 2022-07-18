@@ -16,7 +16,7 @@ function Mixer({ song }) {
     new Volume().toDestination(),
   ]);
 
-  const [fxChoices, setFxChoices] = useState([]);
+  const [fxChoices, setFxChoices] = useState(["reverb", "delay"]);
   const handleSetFxChoices = (value) => setFxChoices(value);
   const [activeBusses, setActiveBusses] = useState([[], []]);
 
@@ -37,8 +37,8 @@ function Mixer({ song }) {
         } else {
           activeBusses[i][id] = false;
           setActiveBusses([...activeBusses]);
-          // channels.current[e.target.name].connect(busChannels.current[i]);
-          // channels.current[e.target.name].disconnect(busChannels.current[i]);
+          channels.current[e.target.name].connect(busChannels.current[i]);
+          channels.current[e.target.name].disconnect(busChannels.current[i]);
           channels.current[e.target.name].connect(Destination);
         }
       }
